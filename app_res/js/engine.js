@@ -14,7 +14,7 @@
 	//Load localization dictionary
 	window.LocLoad = function(lang, success, error){
 		var dictionary = document.createElement("script");
-		dictionary.setAttribute("src", rootPage+path+"lang_"+lang.toUpperCase()+".js")
+		dictionary.setAttribute("src", "lang_"+lang.toUpperCase()+".js")
 		document.head.appendChild(dictionary);
 		dictionary.onload = function(){
 			console.log("Succes load dictionary: "+lang);
@@ -22,7 +22,7 @@
 			if(window.EngineListeners.LocLoad) window.EngineListeners.LocLoad();
 			if(success) success();
 		}
-		dictionary.error = function(){
+		dictionary.onerror = function(){
 			console.log("Error load dictionary: "+lang);
 			window.EngineStates.ErrorLocLoad = true;
 			if(window.EngineListeners.ErrorLocLoad) window.EngineListeners.ErrorLocLoad();

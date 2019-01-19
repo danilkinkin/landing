@@ -1,0 +1,4 @@
+//English dictionary
+Loc = {
+
+}
