@@ -46,6 +46,9 @@
 			easeOut: function(t, power){
 				return (t-1)*(t-1)*(t-1)*(t-1)*(t-1)+1;
 			}		
+		},
+		bound: function(t, a, b){
+			return t<a? a : (t>b? b : t);
 		}
 	}
 

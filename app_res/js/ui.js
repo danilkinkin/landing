@@ -47,6 +47,15 @@ function UI(type, param){
 		element.removeAttribute(attr);
 		return this;
 	}
+	//Events
+	this.addEvent = function(eventKey, eventValue){
+		element[eventKey] = eventValue;
+		return this;
+	}
+	this.removeEvent = function(eventKey){
+		delete element[eventKey];
+		return this;
+	}
 	//Content
 	this.clearContent = function(){
 		element.innerHTML = "";
