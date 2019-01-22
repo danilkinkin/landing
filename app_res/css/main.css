@@ -1,15 +1,45 @@
 body{
 	margin: 0;
     min-height: 100vh;
+    font-family: "Gilroy";
+    color: #000;
+}
+a{
+	font-size: 18px;
+	font-weight: lighter;
+	margin: 0;
+	text-decoration: none;
+	color: #000;
+}
+button{
+	outline: none;
+	border: none;
+	background: none;
+}
+::selection{
+	background: #000;
+	color: #fff;
 }
 #resize-wrapper{
-	min-width: 100%;
-	min-height: 100vh;
-	display: flex;
-	align-items: center;
-	justify-content: center;
+	height: 100vh;
 
 }
-.logo-loader{
-	position: absolute;
+.scroll-content{
+	width: 100%;
+}
+.scrollbar-track{
+	background: none !important;
+	width: 10px !important;
+}
+.scrollbar-thumb{
+	border-radius: 0px !important;
+    background-color: black !important;
+    opacity: 0;
+    background-color: #0066DE !important;
+    width: 100% !important;
+    transition: opacity 0.3s ease;
+}
+.scrollbar-track:hover .scrollbar-thumb,
+.show-scroll .scrollbar-thumb{
+	opacity: 1;
 }

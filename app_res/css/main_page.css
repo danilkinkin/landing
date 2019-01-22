@@ -1,0 +1,119 @@
+.logo-loader{
+	position: absolute;
+}
+.main-page{
+	width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-shrink: 0;
+    flex-grow: 0;
+}
+.main-page__cover-wrp{
+    background-color: #1073DD;
+    width: 100%;	
+}
+.main-page__cover{
+	max-width: 1510px;
+	margin: auto;
+    padding: 0 50px;
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+.main-page__cover_link-block{
+	display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    height: 110px;
+    flex-shrink: 0;
+}
+.link-block__links{
+	display: inherit;
+}
+.main-page__cover_link-block a{
+    display: block;
+    color: #fff;
+}
+.link-block__links a{	
+	margin-right: 40px;
+}
+.main-page__cover p{
+	max-width: 350px;
+	font-size: 18px;
+	font-weight: lighter;
+	margin: 0;
+	color: #fff;
+	line-height: 130%;
+}
+.main-page__cover_ahead{
+    margin-bottom: 45px;
+    margin-top: auto;
+}
+.fixed-header .main-page__cover{
+	position: fixed;
+    height: 360px;
+    top: -300px;
+}
+.main-page__works{
+	display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-top: 120px;
+}
+.works__work-card{
+	background-color: #0066DE;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 1200px;
+	height: 440px;
+	margin: calc(calc(100vh - 560px) / 4) 0;
+	color: #fff;
+	font-size: 96px;
+	font-weight: bolder;	
+}
+.main-page__footer{
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+	margin-top: calc(calc(100vh - 560px) / -2);
+}
+.main-page__footer_title{
+	color: #fff;
+    font-size: 72px;
+    font-weight: 900;
+    padding: 38px 56px;
+    background-color: #0066DE;
+}
+.main-page__footer_copy{
+	padding: 40px;
+    box-sizing: border-box;
+    font-size: 13px;
+    font-weight: lighter;
+    color: #707070;
+    position: absolute;
+    bottom: 0;
+}
+h1{
+	font-size: 72px;
+	font-weight: bolder;
+	margin: 0;
+	line-height: 80%;
+	color: #fff;
+}
+h2{
+	font-size: 18px;
+	font-weight: lighter;
+	margin: 0;
+	color: #fff;
+}
+.scrollbar-track{
+	display: none !important;
+}

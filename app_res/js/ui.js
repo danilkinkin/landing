@@ -20,7 +20,7 @@ function UI(type, param){
 		}
 
 		if(param.content){
-			if(param.text) element.textContent = param.content;
+			if(!param.contentHTML) element.textContent = param.content;
 			else element.innerHTML = param.content;
 		}
 	}

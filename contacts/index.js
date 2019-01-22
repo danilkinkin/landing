@@ -12,5 +12,6 @@ function preRender(){
 
 //All resources are loaded
 function render(){
-
+	var wrp = new UI("div", {content: Loc.test, text: true});
+	document.getElementById("resize-wrapper").appendChild(wrp.getHTML());
 }
