@@ -44,6 +44,13 @@ LocLoad("RU", function(){
 			}, 700);
 		});
 
+		window.onmousemove = function(e){
+			mouse.X = e.clientX - document.documentElement.clientWidth*0.5;
+			mouse.Y = e.clientY - document.documentElement.clientHeight*0.5;
+			mouse.XForce = mouse.X/(document.documentElement.clientWidth*0.5);
+			mouse.YForce = mouse.Y/(document.documentElement.clientHeight*0.5);
+		}
+
 		listeners();
 	});
 
@@ -154,6 +161,10 @@ function logoAnim(callback){
 var scrl = 0;
 var scrlD = 1;
 var scrlDN = 1;
+var selectWork = 0;
+var tweaking = false;
+var mouse = {X: 0, Y: 0, XForce: 0, YForce: 0}
+var mouseSmooth = {X: 0, Y: 0, XForce: 0, YForce: 0}
 function listeners(){
 	/*if(scrollbar.offset.y-worksBlock.offsetTop+110 > 0){
 		if(!isAheadVisible){
@@ -177,12 +188,30 @@ function listeners(){
 	}*/
 	scrl += (Math.abs(scrollDelta)-scrl)*(Math.abs(scrollDelta) > 25? 0.1 : 0.012);
 	scrlDN = 1/((scrl < 22? 0 : scrl-22)+1);
+	if(scrlD < 0.2){
+		if(!tweaking){
+			tweaking = true;
+			//console.log("tweaking!");
+		}
+	}else{
+		if(tweaking){
+			//console.log("no tweaking! - B");
+			scrollbar.scrollTo(0, -document.documentElement.clientHeight*0.5 + worksList[selectWork].element.offsetTop + worksList[selectWork].element.clientHeight*0.5, 600);
+			tweaking = false;
+		}
+	}
 	scrlD += (scrlDN-scrlD)*(scrlDN < 0.6? 0.6 : 0.05);
+	mouseSmooth.XForce += (mouse.XForce - mouseSmooth.XForce)*(Math.abs(mouse.XForce) < 0.6? 0.6 : 0.05);
+	mouseSmooth.YForce += (mouse.YForce - mouseSmooth.YForce)*(Math.abs(mouse.YForce) < 0.6? 0.6 : 0.05);
 	//scrlDN = scrlD;
 	//console.log(scrlD)
 	//scrlD = Transition.quartic.ease(scrlD);
 	//console.log(scrl)
+
+	//scrollbar.offset.y = -document.documentElement.clientHeight*0.5 + worksList[selectWork].element.offsetTop + worksList[selectWork].element.clientHeight*0.5
+
 	for(var i=0; i<worksList.length; i++){
+		//scrollbar.offset.y + document.documentElement.clientHeight*0.5 - worksList[i].element.offsetTop - elemHeight*0.5
 		var offsetTop = worksList[i].element.offsetTop+worksList[i].element.clientHeight*0.5;
 
 		var t1 = offsetTop-(scrollbar.offset.y+document.documentElement.clientHeight*0.7);
@@ -214,9 +243,16 @@ function listeners(){
 
 		//works[i].element.style.zIndex = Math.floor(s);
 		worksList[i].element.setAttribute("offset", scrollbar.offset.y+document.documentElement.clientHeight*0.5 - offsetTop);
-		t = t * (scrollbar.offset.y+document.documentElement.clientHeight*0.5 - offsetTop);
+		if(Math.abs(scrollbar.offset.y+document.documentElement.clientHeight*0.5 - worksList[selectWork].element.offsetTop - worksList[selectWork].element.clientHeight*0.5) > 
+		   Math.abs(scrollbar.offset.y+document.documentElement.clientHeight*0.5 - worksList[i].element.offsetTop - worksList[i].element.clientHeight*0.5)){
+			selectWork = i;
+			//console.log(i);
+			//console.log(scrollbar.offset.y)
+		}
+		var xOffset = Transition.cubic.ease(t*0.7+0.3)*Transition.quadratic.easeOut(Math.abs(mouseSmooth.XForce))*(mouseSmooth.XForce > 0? 1 : -1)*10;
+		t = t * (scrollbar.offset.y+document.documentElement.clientHeight*0.5 - offsetTop)+Transition.cubic.ease(t*0.7+0.3)*Transition.quadratic.easeOut(Math.abs(mouseSmooth.YForce))*(mouseSmooth.YForce > 0? 1 : -1)*10;
 
-		worksList[i].element.style.transform = "scale("+s+") translateY("+t+"px)";
+		worksList[i].element.style.transform = "scale("+s+") translateY("+t+"px) translateX("+xOffset+"px)";
 	}
 
 	requestAnimationFrame(listeners)
