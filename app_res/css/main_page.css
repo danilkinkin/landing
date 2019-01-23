@@ -14,21 +14,27 @@
     background-color: #1073DD;
     width: 100%;
     position: relative;
-}
-.main-page__cover{
-    box-sizing: border-box;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
+}
+.main-page__cover{
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    flex-shrink: 0;
+    
 }
 .main-page__cover-wrp_link-block,
+.main-page__cover-bottom_link-block,
 .main-page__cover{
 	max-width: 1510px;
-    margin: auto;
+	margin: auto;
     padding: 0 50px;
     width: 100%;
+    box-sizing: border-box;
 }
-.main-page__cover_link-block,
+.main-page__cover-bottom_link-block,
 .main-page__cover-wrp_link-block{
 	display: flex;
     flex-direction: row;
@@ -41,6 +47,7 @@
     box-sizing: border-box;
     bottom: 0;
     position: absolute;
+    /*transition: width .85s cubic-bezier(.475,.425,0,.995);*/
 }
 .main-page__cover-wrp_wave-bottom{
 	position: absolute;
@@ -63,6 +70,9 @@
     height: 110px !important;
     background: none;
 }
+.unlock-cover-links .main-page__cover-wrp_link-block{
+	width: 1690px;
+}
 .unlock-cover-links #link-resume-wave,
 .unlock-cover-links #link-works-wave{
 	display: none;
@@ -70,7 +80,7 @@
 .link-block__links{
 	display: inherit;
 }
-.main-page__cover_link-block a{
+.main-page__cover-bottom_link-block a{
     display: block;
     color: #fff;
 }
@@ -108,8 +118,18 @@
 	height: 440px;
 	margin: calc(calc(100vh - 560px) / 4) 0;
 	color: #fff;
-	font-size: 96px;
-	font-weight: bolder;	
+	/*font-size: 96px;*/
+	font-weight: bolder;
+	position: relative;
+	overflow: hidden;
+	font-size: 0;	
+}
+.work-card_bg{
+	width: 100%;
+    height: 100%;
+    position: absolute;
+    z-index: -1;
+    background-size: cover;
 }
 .main-page__footer{
     height: 100vh;
@@ -157,7 +177,7 @@ h2{
 	background-color: #E9F4FF;
 	transition: height 0.3s ease,
 				bottom 0.3s ease,
-				width 0.3s ease;
+				width cubic-bezier(.16,1,.29,.99) .667s;
 	position: fixed;
 	bottom: 40px;
 	right: 50px;
@@ -168,6 +188,8 @@ h2{
 	overflow: hidden;
 	background-image: url("../image/arrow.svg");
 	background-repeat: no-repeat;
+	/*transition: background-position cubic-bezier(.16,1,.29,.99) .667s;
+    background-position: 5px 20.5px;*/
     background-position: 33px 20.5px;
 }
 #scrollbar-works.scrollbar-works-hide{
@@ -177,4 +199,7 @@ h2{
 #scrollbar-works.scrollbar-works-button-up-style{
 	width: 113px;
     cursor: pointer;
+}
+#scrollbar-works.scrollbar-works-button-up-style #scrollbar-works-fill{
+	background-position: 33px 20.5px;
 }

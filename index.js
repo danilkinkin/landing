@@ -1,7 +1,7 @@
 var worksList 			= [
 							{name: "ClockTab", path: "clockTab"},
 							{name: "Sky Cube", path: "sky-cube"},
-							{name: "ClockTab", path: "clockTab"},
+							/*{name: "ClockTab", path: "clockTab"},
 							{name: "Sky Cube", path: "sky-cube"},
 							{name: "ClockTab", path: "clockTab"},
 							{name: "Sky Cube", path: "sky-cube"},
@@ -10,7 +10,7 @@ var worksList 			= [
 							{name: "ClockTab", path: "clockTab"},
 							{name: "Sky Cube", path: "sky-cube"},
 							{name: "ClockTab", path: "clockTab"},
-							{name: "Sky Cube", path: "sky-cube"}
+							{name: "Sky Cube", path: "sky-cube"}*/
 						];
 //var scrollTimeout 		= null;
 var scrollbar 			= null;
@@ -133,7 +133,7 @@ function update(){
 				scrollTo.set(0, 0, 600)
 			}else{			
 				if(scrollbar.offset.y > scrollbar.limit.y-halfScreenSizeY) scrollTo.set(0, scrollbar.limit.y, 600);
-				else scrollTo.set(0, -halfScreenSizeY + worksList[selectWork].element.offsetTop + workCardHalfHeight, 600);
+				else scrollTo.set(0, -halfScreenSizeY + worksList[selectWork].body.offsetTop + workCardHalfHeight, 600);
 			}
 			if(distableNextTweak){
 				distableNextTweak = false;
@@ -153,7 +153,7 @@ function update(){
 
 
 	for(var i=selectWork<2? 0 : selectWork-2; i<(selectWork+2>=worksList.length? worksList.length : selectWork+2); i++){
-		var offsetTop = worksList[i].element.offsetTop+workCardHalfHeight;
+		var offsetTop = worksList[i].body.offsetTop+workCardHalfHeight;
 
 		var t = 0 ;
 
@@ -177,15 +177,17 @@ function update(){
 
 		var t = 1 - Transition.bound(t/halfScreenSizeY, 0, 1);
 
-		if(Math.abs(scrollbar.offset.y+halfScreenSizeY - worksList[selectWork].element.offsetTop - workCardHalfHeight) > 
+		if(Math.abs(scrollbar.offset.y+halfScreenSizeY - worksList[selectWork].body.offsetTop - workCardHalfHeight) > 
 		   Math.abs(scrollbar.offset.y+halfScreenSizeY - offsetTop)){
 			selectWork = i;
 		}
 
 		//var xOffset = Transition.cubic.ease(t*0.7+0.3)*Transition.quadratic.easeOut(Math.abs(mouseForceSmooth.XForce))*(mouseForceSmooth.XForce > 0? 1 : -1)*10;
-		t = t * (scrollbar.offset.y+halfScreenSizeY - offsetTop)/*+Transition.cubic.ease(t*0.7+0.3)*Transition.quadratic.easeOut(Math.abs(mouseForceSmooth.YForce))*(mouseForceSmooth.YForce > 0? 1 : -1)*10*/;
+		t = t * (scrollbar.offset.y+halfScreenSizeY - offsetTop)
+		/*+Transition.cubic.ease(t*0.7+0.3)*Transition.quadratic.easeOut(Math.abs(mouseForceSmooth.YForce))*(mouseForceSmooth.YForce > 0? 1 : -1)*10*/;
 
-		worksList[i].element.style.transform = "scale("+s+") translate3D("+/*xOffset*/0+"px,"+t+"px,0px)";
+		worksList[i].body.style.transform = "scale("+s+") translate3D("+/*xOffset*/0+"px,"+t+"px,0px)";
+		worksList[i].bg.style.transform = "scale("+((1.8-s)*1.25)+")";
 	}
 
 	requestAnimationFrame(update)
@@ -233,9 +235,12 @@ function preRender(){
 function render(endRender){
 	var works = new UI("div", {class: "main-page__works"});
 	for(var i=0; i<worksList.length; i++){
-		worksList[i].element = new UI("div", {class: "works__work-card", content: worksList[i].name});
-		works.append(worksList[i].element);
-		worksList[i].element = worksList[i].element.getHTML();
+		worksList[i].body = new UI("div", {class: "works__work-card", content: worksList[i].name});
+		worksList[i].bg = new UI("div", {class: "work-card_bg", style: {key: "backgroundImage", value: "url('works/"+worksList[i].path+"/preview.png')"}});
+		worksList[i].body.append(worksList[i].bg);
+		works.append(worksList[i].body);
+		worksList[i].body = worksList[i].body.getHTML();
+		worksList[i].bg = worksList[i].bg.getHTML();
 	}
 	var wrp = new UI("div", {class: "main-page"})
 		.append(
@@ -253,66 +258,65 @@ function render(endRender){
 						)
 						.append(
 							new UI("p", {content: Loc.salutation_part_1+" <span id='my-age'>19</span> "+Loc.salutation_part_2, contentHTML: true})
-						)
-						.append(
-							new UI("div", {class: "main-page__cover_link-block"})
-								.append(
-									new UI("div", {class: "link-block__links"})
-										.append(
-											new UI("a", {
-												attr: [
-													{key: "href", value: "../contacts/index.html"},
-													{key: "id", value: "link-contacts"}
-												],
-												class: "link-contacts",
-												content: Loc.link_contacts
-											})
-										)
-										.append(
-											new UI("a", {
-												attr: [
-													{key: "href", value: ""},
-													{key: "id", value: "link-works"}
-												],
-												class: "link-works",
-												content: Loc.link_works
-											})
-												.addEvent("onclick", function(e){
-													e.preventDefault();
-													e.stopPropagation();
-													distableNextTweak = true;
-													scrollTo.forcibly = true;
-													scrollTo.set(0, -halfScreenSizeY + worksList[0].element.offsetTop + workCardHalfHeight, 600);
-												})
-										)
-										.append(
-											new UI("a", {
-												attr:[
-													{key: "href", value: "resume.pdf"},
-													{key: "target", value: "_blank"},
-													{key: "id", value: "link-resume"}
-												],
-												class: "link-resume",
-												content: Loc.link_resume
-											})
-										)
-								)
-								.append(
-									new UI("a", {
-										attr: [
-											{key: "href", value: "mailto:hello@danilkinkin.com"},
-											{key: "id", value: "link-mail"}
-										],
-										class: "link-mail",
-										content: "hello@danilkinkin.com"
-									})
-								)
-						)
+						)						
 				)
+				.append(
+						new UI("div", {class: "main-page__cover-bottom_link-block", attr: {key: "id", value: "cover-bottom_link-block"}})
+							.append(
+								new UI("div", {class: "link-block__links"})
+									.append(
+										new UI("a", {
+											attr: [
+												{key: "href", value: "../contacts/index.html"},
+												{key: "id", value: "link-contacts"}
+											],
+											class: "link-contacts",
+											content: Loc.link_contacts
+										})
+									)
+									.append(
+										new UI("a", {
+											attr: [
+												{key: "href", value: ""},
+												{key: "id", value: "link-works"}
+											],
+											class: "link-works",
+											content: Loc.link_works
+										})
+											.addEvent("onclick", function(e){
+												e.preventDefault();
+												e.stopPropagation();													
+												scrollTo.forcibly = true;
+												scrollTo.set(0, -halfScreenSizeY + worksList[0].body.offsetTop + workCardHalfHeight, 600);
+											})
+									)
+									.append(
+										new UI("a", {
+											attr:[
+												{key: "href", value: "resume.pdf"},
+												{key: "target", value: "_blank"},
+												{key: "id", value: "link-resume"}
+											],
+											class: "link-resume",
+											content: Loc.link_resume
+										})
+									)
+							)
+							.append(
+								new UI("a", {
+									attr: [
+										{key: "href", value: "mailto:hello@danilkinkin.com"},
+										{key: "id", value: "link-mail"}
+									],
+									class: "link-mail",
+									content: "hello@danilkinkin.com"
+								})
+							)
+					)
 				.append(
 					new UI("div", {class: "main-page__cover-wrp_wave-bottom", attr: {key: "id", value: "cover-wrp_wave-bottom"}})
 						.append(
-							new UI("div", {class: "main-page__cover-wrp_link-block"})
+							new UI("div", {class: "main-page__cover-wrp_link-block", attr: {key: "id", value: "cover-wrp_wave-bottom_link-block"}})
 								.append(
 									new UI("div", {class: "link-block__links"})
 										.append(
@@ -337,9 +341,8 @@ function render(endRender){
 												.addEvent("onclick", function(e){
 													e.preventDefault();
 													e.stopPropagation();
-													distableNextTweak = true;
 													scrollTo.forcibly = true;
-													scrollTo.set(0, -halfScreenSizeY + worksList[0].element.offsetTop + workCardHalfHeight, 600);
+													scrollTo.set(0, -halfScreenSizeY + worksList[0].body.offsetTop + workCardHalfHeight, 600);
 												})
 										)
 										.append(
@@ -371,7 +374,7 @@ function render(endRender){
 		.append(
 			new UI("div", {class: "main-page__footer"})
 				.append(new UI("div", {class: "main-page__footer_title", content: "Danilkinkin"}))
-				.append(new UI("div", {class: "main-page__footer_copy", content: "Danilkinkin 2018"}))
+				.append(new UI("div", {class: "main-page__footer_copy", content: "Danilkinkin 2019"}))
 		)
 		.append(
 			new UI("div", {class: "scrollbar-works-hide", attr: {key: "id", value: "scrollbar-works"}})
@@ -395,6 +398,8 @@ function render(endRender){
 		this.linkResumeWave 		= document.getElementById("link-resume-wave");
 		this.scrollWork 			= document.getElementById("scrollbar-works");
 		this.scrollWorkFill 		= document.getElementById("scrollbar-works-fill");
+		this.linksBlockMain 		= document.getElementById("cover-bottom_link-block");
+		this.linksBlockWave			= document.getElementById("cover-wrp_wave-bottom_link-block");
 		this.headIsUnlock 			= false;
 		this.scrollWorkIsHide 		= true;
 		this.buttonUpIsHide 		= true;
@@ -405,6 +410,8 @@ function render(endRender){
 			this.linkWorksWave.style.opacity = 
 			this.linkResume.style.opacity = 
 			this.linkResumeWave.style.opacity = 1-Transition.bound(t, 0, 1);
+			this.linksBlockMain.style.maxWidth = 
+			this.linksBlockWave.style.maxWidth = (1510+180*Transition.bound(t, 0, 1))+"px";
 		}.bind(this);
 
 		this.headUnlock = function(){
