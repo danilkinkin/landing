@@ -48,6 +48,10 @@ var scrollTo 			= new function(){
 								clearTimeout(timer);
 							}.bind(this);
 						};
+var scrollBlockPosition = 0;
+var closePreloader 		= function(){
+	console.log("LOAD!")
+}
 var debugGraph 			= new function(){
 	var canvas;
 	var ctx;
@@ -83,6 +87,7 @@ window.onmousemove = function(e){
 }
 
 function update(){
+	if(scrollBlockPosition != -1) scrollbar.scrollTo(0, scrollBlockPosition, 0);
 	if(scrollbar.offset.y > halfScreenSizeY*2-110){
 		domState.headUnlock();
 	}else{
@@ -196,39 +201,88 @@ function update(){
 //Application entry point
 preRender();
 
-LocLoad("RU", function(){
-	render(function(){
-		scrollbar = window.Scrollbar;
-		scrollbar.use(window.OverscrollPlugin)
-		scrollbar = scrollbar.init(document.getElementById("resize-wrapper"), {
-			damping: 0.08,
-			alwaysShowTracks: true
-		});
-		var scollOffset = 0;
-		scrollbar.addListener((status) => {
-			/*if(~scrollFreezePos){
-				scrollbar.setPosition(0, scrollFreezePos);
-				return;
-			}*/
-			scrollDelta = status.offset.y-scollOffset;
-			scollOffset = status.offset.y;
-			/*if(scrollTimeout) clearTimeout(scrollTimeout);
-			else document.body.classList.add("show-scroll");
-			scrollTimeout = setTimeout(function(){
-				document.body.classList.remove("show-scroll");
-				scrollTimeout = null;
-			}, 700);*/
-		});
-		//debugGraph.ini();
-		domState.rebulid();
-		update();
-	});
 
-});
 
 
 function preRender(){
-	//logoAnim(render);
+	var logo = new UI("canvas")
+		.class("logo-loader")
+		.addAttribute("width", "178")
+		.addAttribute("height", "245");
+	var logoWrp = new UI("div", {class: "logo-loader-wrapper"}).append(logo);
+	document.getElementById("resize-wrapper").appendChild(logoWrp.getHTML());
+
+	var canvas 				= logo.getHTML();
+	var ctx 				= canvas.getContext('2d');
+	var time 				= 0;
+	var start 				= performance.now();
+	var percentload 		= 0;
+		scrollBlockPosition	= 0;
+
+	function drawFrame() {
+		time += (percentload*0.01 - time)*0.1;
+		canvas.width = canvas.width;
+		drawCircle(Transition.cubic.ease(time));
+		if(time > 0.5)
+			drawLine(Transition.cubic.ease(time*2-1));	
+		if(time < 1) requestAnimationFrame(drawFrame);
+	}
+	requestAnimationFrame(drawFrame);
+
+	function drawCircle(t){
+		ctx.lineWidth = 20;
+		ctx.strokeStyle = "rgb(16,115,221)";
+		ctx.beginPath();
+		ctx.arc(178/2, 245/2, 178/2-10, Math.PI*0.5*(t-1), Math.PI*0.5*(t*5-1));
+		ctx.stroke();
+	}
+
+	function drawLine(t){
+		ctx.lineWidth = 20;
+		ctx.strokeStyle = "rgb(16,115,221)";
+		ctx.beginPath();
+		ctx.moveTo(39.5, 243);
+		ctx.lineTo(31*t+39.5, 241*(1-t)+2);
+		ctx.stroke();	
+	}
+
+	var loader = new Engine.loadResurces().load();
+	loader.status = function(p){
+		percentload = p;
+	}
+	loader.finish = function(){
+		//console.log("FINISH LOAD")
+		LocLoad("RU", function(){
+			render(function(){
+				scrollbar = window.Scrollbar;
+				scrollbar.use(window.OverscrollPlugin)
+				scrollbar = scrollbar.init(document.getElementById("resize-wrapper"), {
+					damping: 0.08,
+					alwaysShowTracks: true
+				});
+				var scollOffset = 0;
+				scrollbar.addListener((status) => {
+					scrollDelta = status.offset.y-scollOffset;
+					scollOffset = status.offset.y;
+				});
+				//debugGraph.ini();
+				domState.rebulid();
+				update();
+				var t = document.getElementById("main-page__cover_ahead").getBoundingClientRect().top-halfScreenSizeY*2;
+				document.getElementById("main-page").style.transform = "translate3D(0,"+-t+"px,0)";
+				setTimeout(function(){
+					document.body.classList.add("hide-loader");
+					setTimeout(function(){
+						document.getElementById("main-page").style.transform = "";
+						document.body.classList.remove("hide-loader");
+						logoWrp.destroy();
+						scrollBlockPosition = -1;
+					}, 1000);
+				}, 100);				
+			});
+
+		});
+	}
 	//render();
 }
 
@@ -242,13 +296,13 @@ function render(endRender){
 		worksList[i].body = worksList[i].body.getHTML();
 		worksList[i].bg = worksList[i].bg.getHTML();
 	}
-	var wrp = new UI("div", {class: "main-page"})
+	var wrp = new UI("div", {class: "main-page", attr: {key: "id", value: "main-page"}})
 		.append(
 			new UI("div", {class: "main-page__cover-wrp", attr: {key: "id", value: "cover-wrp"}})
 				.append(
 					new UI("div", {class: "main-page__cover"})
 						.append(
-							new UI("div", {class: "main-page__cover_ahead"})
+							new UI("div", {class: "main-page__cover_ahead", attr: {key: "id", value: "main-page__cover_ahead"}})
 								.append(
 									new UI("h1", {content: "Danilkinkin"})
 								)
@@ -461,45 +515,4 @@ function render(endRender){
 		}.bind(this);
 	}
 	if(endRender) endRender();
-}
-
-function logoAnim(callback){
-	var logo = new UI("canvas")
-		.class("logo-loader")
-		.addAttribute("width", "178")
-		.addAttribute("height", "245");
-	document.getElementById("resize-wrapper").appendChild(logo.getHTML());
-
-	var canvas 	= logo.getHTML();
-	var ctx 	= canvas.getContext('2d');
-	var time 	= 0;
-	var start 	= performance.now();
-
-	function animate(timeNow) {
-		time = (timeNow - start)*0.0004;
-		canvas.width = canvas.width;
-		drawCircle(Transition.cubic.ease(time));
-		if(time > 0.5)
-			drawLine(Transition.cubic.ease(time*2-1));	
-		if(time < 1) requestAnimationFrame(animate);
-		else if(callback) callback(logo);
-	}
-	requestAnimationFrame(animate);
-
-	function drawCircle(t){
-		ctx.lineWidth = 20;
-		ctx.strokeStyle = "rgb(16,115,221)";
-		ctx.beginPath();
-		ctx.arc(178/2, 245/2, 178/2-10, Math.PI*0.5*(t-1), Math.PI*0.5*(t*5-1));
-		ctx.stroke();
-	}
-
-	function drawLine(t){
-		ctx.lineWidth = 20;
-		ctx.strokeStyle = "rgb(16,115,221)";
-		ctx.beginPath();
-		ctx.moveTo(39.5, 243);
-		ctx.lineTo(31*t+39.5, 241*(1-t)+2);
-		ctx.stroke();	
-	}
 }

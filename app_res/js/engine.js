@@ -11,6 +11,34 @@
 		ErrorLocLoad: null,
 	}
 
+	window.Engine = new function(){
+		this.loadResurces = function(resList){
+			var time = 0;
+			var timer = null;
+			this.load = function(){
+				timer = setInterval(function(){
+					time += Math.random()*10;
+					time = time > 100? 100 : time;
+					this.status(time);
+					if(time >= 100){
+						clearInterval(timer);
+						this.finish();
+					}
+				}.bind(this), Math.random()*50);
+				return this;
+			}.bind(this);
+
+			this.status = function(){
+
+			}
+			this.finish = function(){
+
+			}
+			
+			return this;
+		}
+	}
+
 	//Load localization dictionary
 	window.LocLoad = function(lang, success, error){
 		var dictionary = document.createElement("script");

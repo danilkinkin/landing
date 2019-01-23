@@ -203,3 +203,22 @@ h2{
 #scrollbar-works.scrollbar-works-button-up-style #scrollbar-works-fill{
 	background-position: 33px 20.5px;
 }
+.logo-loader-wrapper{
+	width: 100%;
+	height: 100vh;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	transition: 1s cubic-bezier(0.63, 0.51, 0, 1);
+	position: absolute;
+	z-index: 1000;
+	background-color: #fff;
+}
+.hide-loader .logo-loader-wrapper{
+	height: 30vh;
+    transform: translate3d(0, -30vh, 0);
+}
+.hide-loader .main-page{
+	transition: transform 1s cubic-bezier(0.63, 0.51, 0, 1);
+    transform: translate3d(0, 0, 0) !important;
+}
