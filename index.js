@@ -12,7 +12,6 @@ var worksList 			= [
 							{name: "ClockTab", path: "clockTab"},
 							{name: "Sky Cube", path: "sky-cube"}*/
 						];
-//var scrollTimeout 		= null;
 var scrollbar 			= null;
 var scrollDelta 		= 1;
 var scrl 				= 0;
@@ -49,9 +48,6 @@ var scrollTo 			= new function(){
 							}.bind(this);
 						};
 var scrollBlockPosition = 0;
-var closePreloader 		= function(){
-	console.log("LOAD!")
-}
 var debugGraph 			= new function(){
 	var canvas;
 	var ctx;
@@ -201,9 +197,6 @@ function update(){
 //Application entry point
 preRender();
 
-
-
-
 function preRender(){
 	var logo = new UI("canvas")
 		.class("logo-loader")
@@ -220,12 +213,21 @@ function preRender(){
 		scrollBlockPosition	= 0;
 
 	function drawFrame() {
-		time += (percentload*0.01 - time)*0.1;
 		canvas.width = canvas.width;
 		drawCircle(Transition.cubic.ease(time));
 		if(time > 0.5)
 			drawLine(Transition.cubic.ease(time*2-1));	
-		if(time < 1) requestAnimationFrame(drawFrame);
+		if(time < 0.98){
+			time += (percentload*0.01 - time)*0.06;
+			requestAnimationFrame(drawFrame);
+		}else{
+			if(time != 1){
+				time = 1;
+				requestAnimationFrame(drawFrame);
+				finishLoad();
+			}
+			
+		}
 	}
 	requestAnimationFrame(drawFrame);
 
@@ -250,8 +252,7 @@ function preRender(){
 	loader.status = function(p){
 		percentload = p;
 	}
-	loader.finish = function(){
-		//console.log("FINISH LOAD")
+	function finishLoad(){
 		LocLoad("RU", function(){
 			render(function(){
 				scrollbar = window.Scrollbar;
@@ -277,13 +278,12 @@ function preRender(){
 						document.body.classList.remove("hide-loader");
 						logoWrp.destroy();
 						scrollBlockPosition = -1;
-					}, 1000);
-				}, 100);				
+					}, 1400);
+				}, 200);				
 			});
 
 		});
 	}
-	//render();
 }
 
 function render(endRender){
@@ -311,7 +311,9 @@ function render(endRender){
 								)
 						)
 						.append(
-							new UI("p", {content: Loc.salutation_part_1+" <span id='my-age'>19</span> "+Loc.salutation_part_2, contentHTML: true})
+							new UI("p", {
+								content: Loc.salutation_part_1+" "+(new Date(Date.now() - new Date(1999, 1, 13, 22)).getFullYear() - 1970)+" "+Loc.salutation_part_2
+							})
 						)						
 				)
 				.append(
@@ -327,6 +329,13 @@ function render(endRender){
 											class: "link-contacts",
 											content: Loc.link_contacts
 										})
+											.addEvent("onclick", function(e){
+												e.preventDefault();
+												e.stopPropagation();													
+												domState.hidePage(function(){
+													window.open("../contacts/index.html", "_self");
+												});
+											})										
 									)
 									.append(
 										new UI("a", {
@@ -382,6 +391,11 @@ function render(endRender){
 												class: "link-contacts",
 												content: Loc.link_contacts
 											})
+												.addEvent("onclick", function(e){
+													e.preventDefault();
+													e.stopPropagation();													
+													domState.hidePage();
+												})
 										)
 										.append(
 											new UI("a", {
@@ -439,10 +453,14 @@ function render(endRender){
 							scrollTo.set(0, 0, 1000);
 						}
 					})
+		)
+		.append(
+			new UI("div", {attr: {key: "id", value: "cap"}})
 		);
 	document.getElementById("resize-wrapper").appendChild(wrp.getHTML());
 
 	domState = new function(){
+		this.page 					= document.getElementById("main-page");
 		this.cover 					= document.getElementById("cover-wrp");
 		this.body 					= document.getElementById("resize-wrapper");
 		this.coverBottom			= document.getElementById("cover-wrp_wave-bottom");
@@ -512,6 +530,31 @@ function render(endRender){
 
 		this.rebulid = function(){
 			this.body.appendChild(this.scrollWork);
+			this.body.appendChild(document.getElementById("cap"));
+		}.bind(this);
+
+		this.hidePage = function(callback){
+			var height = halfScreenSizeY*2-document.getElementById("main-page__cover_ahead").getBoundingClientRect().top;
+			scrollBlockPosition = scrollbar.offset.y;			
+			document.body.classList.add("hide-page");
+			setTimeout(function(){
+				this.page.style.transform = "translate3D(0,"+height+"px,0)";
+				if(callback) setTimeout(callback, 850);
+			}.bind(this), 100);
+		}.bind(this);
+
+		this.showPage = function(){
+			/*var t = document.getElementById("main-page__cover_ahead").getBoundingClientRect().top-halfScreenSizeY*2;
+				document.getElementById("main-page").style.transform = "translate3D(0,"+-t+"px,0)";
+				setTimeout(function(){
+					document.body.classList.add("hide-loader");
+					setTimeout(function(){
+						document.getElementById("main-page").style.transform = "";
+						document.body.classList.remove("hide-loader");
+						logoWrp.destroy();
+						scrollBlockPosition = -1;
+					}, 1400);
+				}, 200);*/
 		}.bind(this);
 	}
 	if(endRender) endRender();

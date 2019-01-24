@@ -181,11 +181,11 @@ h2{
 	position: fixed;
 	bottom: 40px;
 	right: 50px;
+	overflow: hidden;
 }
 #scrollbar-works-fill{
 	width: inherit;
 	background-color: #1073DD;
-	overflow: hidden;
 	background-image: url("../image/arrow.svg");
 	background-repeat: no-repeat;
 	/*transition: background-position cubic-bezier(.16,1,.29,.99) .667s;
@@ -209,7 +209,7 @@ h2{
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	transition: 1s cubic-bezier(0.63, 0.51, 0, 1);
+	transition: 1.4s cubic-bezier(0.79, 0.01, 0.18, 1);
 	position: absolute;
 	z-index: 1000;
 	background-color: #fff;
@@ -219,6 +219,7 @@ h2{
     transform: translate3d(0, -30vh, 0);
 }
 .hide-loader .main-page{
-	transition: transform 1s cubic-bezier(0.63, 0.51, 0, 1);
+	/*0.63, 0.51, 0, 1*/
+	transition: transform 1.4s cubic-bezier(0.79, 0.01, 0.18, 1);
     transform: translate3d(0, 0, 0) !important;
 }

@@ -53,3 +53,19 @@ button{
     font-weight: 400;
     font-family: Roboto;
 }
+#cap{
+	position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 0;
+    background-color: #fff;
+    z-index: 1000;
+	transition: height .85s cubic-bezier(0.79, 0.01, 0.18, 1);
+}
+.hide-page #cap{
+	height: 100vh;
+}
+.hide-page .main-page{
+	transition: transform .85s cubic-bezier(0.79, 0.01, 0.18, 1);
+}
