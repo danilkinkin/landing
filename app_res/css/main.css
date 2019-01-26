@@ -3,6 +3,7 @@ body{
     min-height: 100vh;
     font-family: "Gilroy";
     color: #000;
+	overflow: hidden;
 }
 a{
 	font-size: 18px;

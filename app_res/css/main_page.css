@@ -11,7 +11,7 @@
     flex-grow: 0;
 }
 .main-page__cover-wrp{
-    background-color: #1073DD;
+    background-color: #1624e6;
     width: 100%;
     position: relative;
     min-height: 100vh;
@@ -69,9 +69,6 @@
     z-index: 1000;
     height: 110px !important;
     background: none;
-}
-.unlock-cover-links .main-page__cover-wrp_link-block{
-	width: 1690px;
 }
 .unlock-cover-links #link-resume-wave,
 .unlock-cover-links #link-works-wave{
@@ -144,7 +141,7 @@
     font-size: 72px;
     font-weight: 900;
     padding: 38px 56px;
-    background-color: #0066DE;
+    background-color: #1624e6;
 }
 .main-page__footer_copy{
 	padding: 40px;
@@ -174,18 +171,18 @@ h2{
 #scrollbar-works{
 	width: 4px;
 	height: 90px;
-	background-color: #E9F4FF;
+	background-color: #c9cdff;
 	transition: height 0.3s ease,
 				bottom 0.3s ease,
 				width cubic-bezier(.16,1,.29,.99) .667s;
-	position: fixed;
+	position: absolute;
 	bottom: 40px;
 	right: 50px;
 	overflow: hidden;
 }
 #scrollbar-works-fill{
 	width: inherit;
-	background-color: #1073DD;
+	background-color: #1624e6;
 	background-image: url("../image/arrow.svg");
 	background-repeat: no-repeat;
 	/*transition: background-position cubic-bezier(.16,1,.29,.99) .667s;
@@ -202,6 +199,7 @@ h2{
 }
 #scrollbar-works.scrollbar-works-button-up-style #scrollbar-works-fill{
 	background-position: 33px 20.5px;
+	height: inherit !important;
 }
 .logo-loader-wrapper{
 	width: 100%;

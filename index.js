@@ -73,6 +73,7 @@ var debugGraph 			= new function(){
 		lastDot.Y = y;
 	};
 }
+//var shdws 				= new Shadows("canvas-shadow");
 
 //Listeners
 window.onmousemove = function(e){
@@ -191,7 +192,9 @@ function update(){
 		worksList[i].bg.style.transform = "scale("+((1.8-s)*1.25)+")";
 	}
 
-	requestAnimationFrame(update)
+	//domState.getShadowRects();
+
+	requestAnimationFrame(update);
 }
 
 //Application entry point
@@ -233,7 +236,7 @@ function preRender(){
 
 	function drawCircle(t){
 		ctx.lineWidth = 20;
-		ctx.strokeStyle = "rgb(16,115,221)";
+		ctx.strokeStyle = "#1624e6";
 		ctx.beginPath();
 		ctx.arc(178/2, 245/2, 178/2-10, Math.PI*0.5*(t-1), Math.PI*0.5*(t*5-1));
 		ctx.stroke();
@@ -241,7 +244,7 @@ function preRender(){
 
 	function drawLine(t){
 		ctx.lineWidth = 20;
-		ctx.strokeStyle = "rgb(16,115,221)";
+		ctx.strokeStyle = "#1624e6";
 		ctx.beginPath();
 		ctx.moveTo(39.5, 243);
 		ctx.lineTo(31*t+39.5, 241*(1-t)+2);
@@ -476,6 +479,7 @@ function render(endRender){
 		this.scrollWorkIsHide 		= true;
 		this.buttonUpIsHide 		= true;
 
+
 		this.headStateSet = function(t){
 			this.coverBottom.style.height = 110*t+"px";
 			this.linkWorks.style.opacity = 
@@ -556,6 +560,33 @@ function render(endRender){
 					}, 1400);
 				}, 200);*/
 		}.bind(this);
+
+		/*this.getShadowRects = function(){
+			shdws.clear();
+			shdws.draw(
+				worksList[selectWork].body.getBoundingClientRect().left,
+				worksList[selectWork].body.getBoundingClientRect().top,
+				worksList[selectWork].body.getBoundingClientRect().width,
+				worksList[selectWork].body.getBoundingClientRect().height,
+				"#000"
+			);
+			if(selectWork > 0)
+				shdws.draw(
+					worksList[selectWork-1].body.getBoundingClientRect().left,
+					worksList[selectWork-1].body.getBoundingClientRect().top,
+					worksList[selectWork-1].body.getBoundingClientRect().width,
+					worksList[selectWork-1].body.getBoundingClientRect().height,
+					"#000"
+				);
+			if(selectWork+1 < worksList.length)
+				shdws.draw(
+					worksList[selectWork+1].body.getBoundingClientRect().left,
+					worksList[selectWork+1].body.getBoundingClientRect().top,
+					worksList[selectWork+1].body.getBoundingClientRect().width,
+					worksList[selectWork+1].body.getBoundingClientRect().height,
+					"#000"
+				);
+		}*/
 	}
 	if(endRender) endRender();
 }
