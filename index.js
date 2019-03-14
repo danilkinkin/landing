@@ -1,8 +1,6 @@
 var worksList 			= [
-							{name: "ClockTab", path: "clockTab"},
-							{name: "Sky Cube", path: "sky-cube"},
-							/*{name: "ClockTab", path: "clockTab"},
-							{name: "Sky Cube", path: "sky-cube"},
+							{name: "ClockTab", path: "clockTab", mainColor: "#5058CF"},
+							{name: "Sky Cube", path: "sky-cube", mainColor: "#5058CF"},
 							{name: "ClockTab", path: "clockTab"},
 							{name: "Sky Cube", path: "sky-cube"},
 							{name: "ClockTab", path: "clockTab"},
@@ -10,16 +8,17 @@ var worksList 			= [
 							{name: "ClockTab", path: "clockTab"},
 							{name: "Sky Cube", path: "sky-cube"},
 							{name: "ClockTab", path: "clockTab"},
-							{name: "Sky Cube", path: "sky-cube"}*/
+							{name: "Sky Cube", path: "sky-cube"},
+							{name: "ClockTab", path: "clockTab"},
+							{name: "Sky Cube", path: "sky-cube"}
 						];
 var scrollbar 			= null;
 var scrollDelta 		= 1;
 var scrl 				= 0;
 var scrlD 				= 1;
-var scrlDN 				= 1;
 var selectWork 			= 0;
 var tweaking 			= false;
-var distableNextTweak	= false;
+var distableTweaking	= null;
 var mouse 				= {X: 0, Y: 0, XForce: 0, YForce: 0}
 var mouseForceSmooth 	= {XForce: 0, YForce: 0}
 var halfScreenSizeX 	= document.documentElement.clientWidth*0.5;
@@ -83,6 +82,7 @@ window.onmousemove = function(e){
 	mouse.YForce = mouse.Y/halfScreenSizeY;
 }
 
+
 function update(){
 	if(scrollBlockPosition != -1) scrollbar.scrollTo(0, scrollBlockPosition, 0);
 	if(scrollbar.offset.y > halfScreenSizeY*2-110){
@@ -108,42 +108,21 @@ function update(){
 		domState.buttonUpHidden();
 	}
 
-	if(Math.abs(Math.abs(scrollDelta)-scrl) < 1) scrl = Math.abs(scrollDelta);
-	else scrl += (Math.abs(scrollDelta)-scrl)*(Math.abs(scrollDelta) > 25? 0.1 : 0.012);
-
-	scrlDN = 1/(scrl < 22? 1 : scrl-21);	
-
-	if(Math.abs(scrlDN-scrlD) < 0.05 && scrlDN > scrlD){
-		if(scrlD > 0.95){
-			scrl = Math.abs(scrollDelta);
-			scrlDN = 1/((scrl < 22? 0 : scrl-22)+1);
-			scrlD = scrlDN;
-		}
-	}else{
-		scrlD += (scrlDN-scrlD)*((1-scrlDN)*0.55+0.05);
-	}
-
-
-	if(scrlD < 0.2){
-		if(scrollTo.value){
-			scrollTo.kill();
-		}
-		if(!tweaking) tweaking = true;
-	}else{
-		if(tweaking){
-			if(scrollbar.offset.y < halfScreenSizeY){
-				scrollTo.set(0, 0, 600)
-			}else{			
-				if(scrollbar.offset.y > scrollbar.limit.y-halfScreenSizeY) scrollTo.set(0, scrollbar.limit.y, 600);
-				else scrollTo.set(0, -halfScreenSizeY + worksList[selectWork].body.offsetTop + workCardHalfHeight, 600);
-			}
-			if(distableNextTweak){
-				distableNextTweak = false;
-				scrl = Math.abs(scrollDelta);
-				scrlDN = 1/((scrl < 22? 0 : scrl-22)+1);
-				scrlD = scrlDN;
-			}
-			tweaking = false;
+	scrl += (scrlD-scrl)*((1-scrlD)*0.1+Transition.cubic.ease(1-scrl)*0.05+0.01);	
+	
+	if(Math.abs(scrollDelta) == 0 && tweaking && !scrollTo.forcibly && !distableTweaking){
+		tweaking = false;
+		if(scrollbar.offset.y < halfScreenSizeY){
+			
+			scrollTo.set(0, 0, 600)
+		}else{			
+			if(scrollbar.offset.y > scrollbar.limit.y-halfScreenSizeY) scrollTo.set(0, scrollbar.limit.y, 600);
+			else{
+				console.log("NO ZERO SCALE!");
+				document.body.classList.remove("fast-scroll");
+				scrlD = 1;
+				scrollTo.set(0, -halfScreenSizeY + worksList[selectWork].wrapper.offsetTop + workCardHalfHeight, 600);
+			} 
 		}
 	}
 
@@ -155,7 +134,7 @@ function update(){
 
 
 	for(var i=selectWork<2? 0 : selectWork-2; i<(selectWork+2>=worksList.length? worksList.length : selectWork+2); i++){
-		var offsetTop = worksList[i].body.offsetTop+workCardHalfHeight;
+		var offsetTop = worksList[i].wrapper.offsetTop+workCardHalfHeight;
 
 		var t = 0 ;
 
@@ -165,7 +144,8 @@ function update(){
 			t = (scrollbar.offset.y+halfScreenSizeY*0.6)-offsetTop;
 		}
 
-		var s = (1-Transition.bound(t/(halfScreenSizeY*0.6), 0, 1))*0.2*Transition.quartic.ease(distableNextTweak? 1 : scrlD)+0.8;
+		var s = (1-Transition.bound(t/(halfScreenSizeY*0.6), 0, 1))*0.2*Transition.quartic.ease(scrl);
+		s = Math.round(s*1000)/1000
 		/*if(i == 1){
 			debugGraph.update((s-0.8)*5);
 			document.getElementById("console_scale").innerHTML = scrlD;
@@ -179,17 +159,21 @@ function update(){
 
 		var t = 1 - Transition.bound(t/halfScreenSizeY, 0, 1);
 
-		if(Math.abs(scrollbar.offset.y+halfScreenSizeY - worksList[selectWork].body.offsetTop - workCardHalfHeight) > 
+		if(Math.abs(scrollbar.offset.y+halfScreenSizeY - worksList[selectWork].wrapper.offsetTop - workCardHalfHeight) > 
 		   Math.abs(scrollbar.offset.y+halfScreenSizeY - offsetTop)){
+		   	worksList[selectWork].wrapper.classList.remove("select-work");
 			selectWork = i;
+			worksList[selectWork].wrapper.classList.add("select-work")
 		}
 
 		//var xOffset = Transition.cubic.ease(t*0.7+0.3)*Transition.quadratic.easeOut(Math.abs(mouseForceSmooth.XForce))*(mouseForceSmooth.XForce > 0? 1 : -1)*10;
 		t = t * (scrollbar.offset.y+halfScreenSizeY - offsetTop)
 		/*+Transition.cubic.ease(t*0.7+0.3)*Transition.quadratic.easeOut(Math.abs(mouseForceSmooth.YForce))*(mouseForceSmooth.YForce > 0? 1 : -1)*10*/;
 
-		worksList[i].body.style.transform = "scale("+s+") translate3D("+/*xOffset*/0+"px,"+t+"px,0px)";
-		worksList[i].bg.style.transform = "scale("+((1.8-s)*1.25)+")";
+		worksList[i].wrapper.style.transform = /*scale("+(s+0.8)+")*/" translate3D("+/*xOffset*/0+"px,"+t+"px,0px)";
+		//worksList[i].bg.style.transform = "scale("+(1.42-(s*5)*0.42)+") translate3D(0px,0px,0px)";
+		//worksList[i].body.style.boxShadow = "0px 1px "+((s+0.8)*45)+"px rgba(0, 0, 0, "+((s)*5*0.17)+")";
+		//worksList[i].text.style.width = worksList[i].maxTextWidth*s*5+"px";
 	}
 
 	//domState.getShadowRects();
@@ -198,7 +182,8 @@ function update(){
 }
 
 //Application entry point
-preRender();
+//preRender();
+finishLoad();
 
 function preRender(){
 	var logo = new UI("canvas")
@@ -255,49 +240,100 @@ function preRender(){
 	loader.status = function(p){
 		percentload = p;
 	}
-	function finishLoad(){
-		LocLoad("RU", function(){
-			render(function(){
-				scrollbar = window.Scrollbar;
-				scrollbar.use(window.OverscrollPlugin)
-				scrollbar = scrollbar.init(document.getElementById("resize-wrapper"), {
-					damping: 0.08,
-					alwaysShowTracks: true
-				});
-				var scollOffset = 0;
-				scrollbar.addListener((status) => {
-					scrollDelta = status.offset.y-scollOffset;
-					scollOffset = status.offset.y;
-				});
-				//debugGraph.ini();
-				domState.rebulid();
-				update();
-				var t = document.getElementById("main-page__cover_ahead").getBoundingClientRect().top-halfScreenSizeY*2;
-				document.getElementById("main-page").style.transform = "translate3D(0,"+-t+"px,0)";
-				setTimeout(function(){
-					document.body.classList.add("hide-loader");
-					setTimeout(function(){
-						document.getElementById("main-page").style.transform = "";
-						document.body.classList.remove("hide-loader");
-						logoWrp.destroy();
-						scrollBlockPosition = -1;
-					}, 1400);
-				}, 200);				
-			});
+}
 
+function finishLoad(){
+	LocLoad("RU", function(){
+		render(function(){
+			scrollbar = window.Scrollbar;
+			scrollbar.use(window.OverscrollPlugin);
+			scrollbar = scrollbar.init(document.getElementById("resize-wrapper"), {
+				damping: 0.08,
+				alwaysShowTracks: true
+			});
+			var scollOffset = 0;
+
+			window.onwheel = function(e){				
+				if(scrollTo.value){
+					scrollTo.kill();
+				}
+				if(!tweaking){
+					tweaking = true;
+					console.log("ZERO SCALE!");
+					document.body.classList.add("fast-scroll");
+					scrlD = 0;
+				}
+				if(distableTweaking) clearTimeout(distableTweaking);
+				distableTweaking = setTimeout(function(){
+					distableTweaking = null;
+				}, 300);
+			}
+			/*scrollbar.addListener((status) => {
+				scrollDelta = status.offset.y-scollOffset;
+				scollOffset = status.offset.y;
+			});*/
+			setInterval(function(){
+				scrollDelta = scrollbar.offset.y-scollOffset;
+				scollOffset = scrollbar.offset.y;
+			}, 100);
+			//debugGraph.ini();
+			domState.rebulid();
+			update();
+			var t = document.getElementById("main-page__cover_ahead").getBoundingClientRect().top-halfScreenSizeY*2;
+			//document.getElementById("main-page").style.transform = "translate3D(0,"+-t+"px,0)";
+			setTimeout(function(){
+				document.body.classList.add("hide-loader");
+				setTimeout(function(){
+					document.getElementById("main-page").style.transform = "";
+					document.body.classList.remove("hide-loader");
+					//logoWrp.destroy();
+					scrollBlockPosition = -1;
+				}, 1400);
+			}, 200);				
 		});
-	}
+		scrollBlockPosition = -1;
+
+	});
 }
 
 function render(endRender){
 	var works = new UI("div", {class: "main-page__works"});
 	for(var i=0; i<worksList.length; i++){
-		worksList[i].body = new UI("div", {class: "works__work-card", content: worksList[i].name});
-		worksList[i].bg = new UI("div", {class: "work-card_bg", style: {key: "backgroundImage", value: "url('works/"+worksList[i].path+"/preview.png')"}});
-		worksList[i].body.append(worksList[i].bg);
-		works.append(worksList[i].body);
-		worksList[i].body = worksList[i].body.getHTML();
-		worksList[i].bg = worksList[i].bg.getHTML();
+		worksList[i].wrapper = new UI("div", {
+			class: "works__work-card__wrapper",
+			style: [
+				{key: "margin", value: (halfScreenSizeY*2 - 560)/4+"px 0px"},
+				{key: "height", value: (halfScreenSizeY*2 <= 700? halfScreenSizeY : 440)+"px"}
+			]
+		})
+			.append(
+				new UI("div", {
+					class: "work-card"
+				})
+					.append(
+						new UI("div", {
+							class: "work-card__bg",
+							style: [
+								{key: "backgroundImage", value: "url('works/"+worksList[i].path+"/preview.png')"},
+								{key: "backgroundColor", value: worksList[i].mainColor}
+							]
+						})
+					)
+					.append(
+						new UI("div", {
+							class: "work-card__name-wrapper"
+						})
+							.append(
+								new UI("div", {
+									class: "work-card__name",
+									content: worksList[i].name
+								})
+							)
+					)	
+			)
+		
+		works.append(worksList[i].wrapper);
+		worksList[i].wrapper = worksList[i].wrapper.getHTML();
 	}
 	var wrp = new UI("div", {class: "main-page", attr: {key: "id", value: "main-page"}})
 		.append(
@@ -353,7 +389,8 @@ function render(endRender){
 												e.preventDefault();
 												e.stopPropagation();													
 												scrollTo.forcibly = true;
-												scrollTo.set(0, -halfScreenSizeY + worksList[0].body.offsetTop + workCardHalfHeight, 600);
+												tweaking = true;
+												scrollTo.set(0, -halfScreenSizeY + worksList[0].wrapper.offsetTop + workCardHalfHeight, 600);
 											})
 									)
 									.append(
@@ -413,7 +450,8 @@ function render(endRender){
 													e.preventDefault();
 													e.stopPropagation();
 													scrollTo.forcibly = true;
-													scrollTo.set(0, -halfScreenSizeY + worksList[0].body.offsetTop + workCardHalfHeight, 600);
+													tweaking = true;
+													scrollTo.set(0, -halfScreenSizeY + worksList[0].wrapper.offsetTop + workCardHalfHeight, 600);
 												})
 										)
 										.append(
@@ -459,7 +497,22 @@ function render(endRender){
 		)
 		.append(
 			new UI("div", {attr: {key: "id", value: "cap"}})
-		);
+		)
+		/*.append(
+			new UI("div", {attr: {key: "id", value: "info-project"}, class: "wokrs-info"})
+				.append(
+					new UI("div", {class: "wokrs-info__info"})
+						.append(
+							new UI("div", {class: "wokrs-info__info_name"})
+						)
+						.append(
+							new UI("div", {class: "wokrs-info__info_description"})
+						)
+				)
+				.append(
+					new UI("div", {class: "wokrs-info__cap"})
+				)
+		);*/
 	document.getElementById("resize-wrapper").appendChild(wrp.getHTML());
 
 	domState = new function(){
@@ -475,6 +528,10 @@ function render(endRender){
 		this.scrollWorkFill 		= document.getElementById("scrollbar-works-fill");
 		this.linksBlockMain 		= document.getElementById("cover-bottom_link-block");
 		this.linksBlockWave			= document.getElementById("cover-wrp_wave-bottom_link-block");
+		this.workDescriptionBlock 	= new UI("div", {class: "wokrs-info"});
+		this.workDescriptionName 	= new UI("div", {class: "wokrs-info__info_name"});
+		this.workDescriptionDesc 	= new UI("div", {class: "wokrs-info__info_description"});
+		this.workDescriptionCap 	= new UI("div", {class: "wokrs-info__cap"});
 		this.headIsUnlock 			= false;
 		this.scrollWorkIsHide 		= true;
 		this.buttonUpIsHide 		= true;
@@ -505,12 +562,13 @@ function render(endRender){
 		}.bind(this);
 
 		this.scrollWorkStateSet = function(t){
-			this.scrollWorkFill.style.height = 90*t+"px";
+			this.scrollWorkFill.style.transform = "translate3d(0,"+90*(t-1)+"px,0)";
 		}.bind(this);
 
 		this.scrollWorkVisible = function(){
 			if(!this.scrollWorkIsHide) return;
 			this.scrollWorkIsHide = false;
+			this.scrollWorkFill.style.transform = "translate3d(0,-90px,0)";
 			this.scrollWork.classList.remove("scrollbar-works-hide");
 		}.bind(this);
 
@@ -535,6 +593,19 @@ function render(endRender){
 		this.rebulid = function(){
 			this.body.appendChild(this.scrollWork);
 			this.body.appendChild(document.getElementById("cap"));
+			this.body.appendChild(
+				this.workDescriptionBlock
+					.append(
+						new UI("div", {class: "wokrs-info__info"})
+							.append(this.workDescriptionName)
+							.append(this.workDescriptionDesc)
+					)
+					.append(this.workDescriptionCap)
+					.getHTML()
+			);
+			/*for(var i=0; i<worksList.length; i++){
+				worksList[i].text.style.width = (worksList[i].text.clientWidth+28)+"px";
+			}*/
 		}.bind(this);
 
 		this.hidePage = function(callback){
