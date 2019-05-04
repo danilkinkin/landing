@@ -1,0 +1,26 @@
+{
+  "name": "danilkinkin-site",
+  "version": "1.0.0",
+  "description": "My web site",
+  "main": "server.js",
+  "scripts": {
+    "build": "node build.js",
+    "server": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Danilkinkin/Danilkinkin-Site.git"
+  },
+  "author": "Danilkinkin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Danilkinkin/Danilkinkin-Site/issues"
+  },
+  "homepage": "https://github.com/Danilkinkin/Danilkinkin-Site#readme",
+  "dependencies": {
+    "node-static": "^0.7.11",
+    "google-closure-compiler": "^20190415.0.0",
+    "ncp": "^2.0.0",
+    "rimraf": "^2.6.3"
+  }
+}
