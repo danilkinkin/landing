@@ -1,6 +1,7 @@
 body{
 	margin: 0;
     min-height: 100vh;
+    overflow: hidden;
 }
 .boot-screen{
 	height: 100vh;
@@ -10,7 +11,19 @@ body{
     justify-content: center;
     padding: 40px;
     box-sizing: border-box;
+    z-index: 100;
+    position: relative;
+    background-color: white;
+    transition:  height 1.4s cubic-bezier(0.79, 0.01, 0.18, 1),
+                 transform 1.4s cubic-bezier(0.79, 0.01, 0.18, 1);
+}
+.boot-screen.hide-boot-screen{
+    height: 30vh;
+    transform: translate3d(0, -30vh, 0);
 }
 .boot-screen-canvas{
 	max-width: 100%;
+}
+.content{
+    display: none;
 }

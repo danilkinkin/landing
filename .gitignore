@@ -1,3 +1,4 @@
 # Specify filepatterns you want git to ignore.
 /node_modules
 /release/app_res
+/temporary files

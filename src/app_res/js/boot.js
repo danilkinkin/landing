@@ -13,7 +13,8 @@ window.renderBootScreen = ()=>{
 
 	var canvasWrapper = document.createElement("div");
 	canvasWrapper.className = "boot-screen";
-	canvasWrapper.appendChild(canvas);	
+	canvasWrapper.setAttribute("id", "boot-screen")
+	canvasWrapper.appendChild(canvas);
 
 	document.body.appendChild(canvasWrapper);
 
@@ -29,9 +30,10 @@ window.renderBootScreen = ()=>{
 			{type: "js", src: "app_res/js/localization.js"},
 			{type: "js", src: "app_res/js/core.js"},
 			{type: "js", src: "app_res/js/pages/index.js"},
-			//{type: "css", src: "app_res/css/style.css"},
+			{type: "css", src: "app_res/css/main.css"},
 			{type: "font", src: "app_res/fonts/Gilroy-Light.otf"},
-			{type: "font", src: "app_res/fonts/Gilroy-ExtraBold.otf"}
+			{type: "font", src: "app_res/fonts/Gilroy-ExtraBold.otf"},
+			{type: "svgPack", src: "app_res/fonts/Gilroy-ExtraBold.otf"}
 		];
 	}else{
 		resources = [
@@ -42,7 +44,12 @@ window.renderBootScreen = ()=>{
 		];
 	}
 	loadResource(resources, ()=>{
-		console.log("Res is load!");
+		window["successLoadLocale"] = ()=>{
+			console.log("All resources loaded")
+			percentload = 100;
+		}
+		console.log("Load locale")
+		window["loadLocale"]();
 	})
 
 	requestAnimationFrame(drawFrame);
@@ -60,6 +67,9 @@ window.renderBootScreen = ()=>{
 			case "js":
 				xhr.responseType = "blob";
 				break;
+			case "css":
+				xhr.responseType = "blob";
+				break;
 			case "font":
 				xhr.responseType = "arraybuffer";
 				break;
@@ -72,10 +82,17 @@ window.renderBootScreen = ()=>{
 				if(xhr.status == 200) {
 					switch (resources[idRes].type) {
 						case "js":
-							var script = document.createElement('script'),
-					        src = URL.createObjectURL(xhr.response);
-							script.src = src;
+							var script = document.createElement('script');
+							script.src = URL.createObjectURL(xhr.response);
 							document.head.appendChild(script);
+							//eval(xhr.responseText)
+							break;
+						case "css":
+							var link = document.createElement('link');
+							link.setAttribute("rel", "stylesheet");
+							link.setAttribute("type", "text/css");
+							link.setAttribute("href", URL.createObjectURL(xhr.response));
+							document.head.appendChild(link);
 							//eval(xhr.responseText)
 							break;
 						case "font":
@@ -98,7 +115,7 @@ window.renderBootScreen = ()=>{
 		}
 
 		function done(){
-			percentload = ((idRes+1)/resources.length)*100;
+			percentload = (idRes/resources.length)*100;
 			if(resources[idRes+1]) loadResource(resources, callback, idRes+1);
 			else callback();
 		}
@@ -119,12 +136,7 @@ window.renderBootScreen = ()=>{
 			if(time != 1){
 				time = 1;
 				requestAnimationFrame(drawFrame);
-				//finishLoad();
-				if(window["render"]) window["render"]();
-				else window["awitRender"] = ()=>{
-					window["render"]();
-				}
-				console.log("End animation")
+				window["render"]();
 			}
 			
 		}

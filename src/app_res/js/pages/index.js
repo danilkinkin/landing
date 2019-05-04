@@ -1,4 +1,4 @@
 window.renderPage = ()=>{
-	console.log("Page is load")
-	console.log(Loc["test"])
+	console.log("Render page");
+	app.body.append(UI.create("h1").content("Page is load"));
 }

@@ -1,5 +1,5 @@
 let locale = {
-	"test": "Check Language Pack"
+	"success-load-locale-message": "Language pack loaded"
 }
 
 window["localeListener"](locale);

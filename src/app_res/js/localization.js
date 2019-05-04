@@ -15,6 +15,7 @@ function Localization(lang){
 
 	window["localeListener"] = (locale)=>{
 		Loc = locale;
+		console.log(Loc["success-load-locale-message"])
 		onloadEvent();
 	}
 
@@ -37,7 +38,7 @@ function Localization(lang){
 		}
 
 		function done(){
-			console.log("Dictonary is load")
+			
 		}
 
 		function error(){

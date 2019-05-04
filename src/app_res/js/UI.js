@@ -17,12 +17,11 @@ class UI{
 		return this._dom;
 	}
 
-	get destroy(){
+	destroy(){
 		this._dom.remove();
 
 		return null;
 	}
-
 	class(clsName){
 		if(clsName) this._dom.className = clsName;
 		let _dom = this._dom;
