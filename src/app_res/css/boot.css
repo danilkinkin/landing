@@ -17,13 +17,49 @@ body{
     transition:  height 1.4s cubic-bezier(0.79, 0.01, 0.18, 1),
                  transform 1.4s cubic-bezier(0.79, 0.01, 0.18, 1);
 }
+.boot-screen svg{
+    position: absolute;
+    left: 0;
+    bottom: 1px;
+    width: 100%;
+    height: 100vw;
+    fill: #fff;
+    transform: translateY(100%) rotate3d(1, 0, 0, 90deg);
+    transform-origin: top;
+    /*transition:  transform 1.4s cubic-bezier(0.79, 0.01, 0.18, 1);*/
+}
 .boot-screen.hide-boot-screen{
     height: 30vh;
     transform: translate3d(0, -30vh, 0);
+}
+.boot-screen.hide-boot-screen svg{
+    /*transform: translateY(100%) rotate3d(1, 0, 0, 90deg);*/
+    animation: boot-screen-wave 1.4s 1 linear;
 }
 .boot-screen-canvas{
 	max-width: 100%;
 }
 .content{
     display: none;
+}
+
+@keyframes boot-screen-wave{
+    0%{
+        transform: translateY(100%) rotate3d(1, 0, 0, 90deg);
+    }
+    18%{
+        transform: translateY(100%) rotate3d(1, 0, 0, 90deg);
+    }
+    40%{
+        transform: translateY(100%) rotate3d(1, 0, 0, 85deg);
+    }
+    55%{
+        transform: translateY(100%) rotate3d(1, 0, 0, 64deg);
+    }
+    80%{
+        transform: translateY(100%) rotate3d(1, 0, 0, 88deg);
+    }
+    100%{
+        transform: translateY(100%) rotate3d(1, 0, 0, 90deg);
+    }
 }

@@ -1,6 +1,8 @@
 /** @define {boolean} */
 var DEBUG = true;
 
+window["resources"] = {};
+
 document.addEventListener("DOMContentLoaded", ()=>{
 	window.renderBootScreen();
 });
@@ -33,7 +35,7 @@ window.renderBootScreen = ()=>{
 			{type: "css", src: "app_res/css/main.css"},
 			{type: "font", src: "app_res/fonts/Gilroy-Light.otf"},
 			{type: "font", src: "app_res/fonts/Gilroy-ExtraBold.otf"},
-			{type: "svgPack", src: "app_res/fonts/Gilroy-ExtraBold.otf"}
+			{type: "svgPack", src: "app_res/img/icons.svg"}
 		];
 	}else{
 		resources = [
@@ -70,6 +72,9 @@ window.renderBootScreen = ()=>{
 			case "css":
 				xhr.responseType = "blob";
 				break;
+			case "svgPack":
+				xhr.responseType = "blob";
+				break;
 			case "font":
 				xhr.responseType = "arraybuffer";
 				break;
@@ -94,6 +99,9 @@ window.renderBootScreen = ()=>{
 							link.setAttribute("href", URL.createObjectURL(xhr.response));
 							document.head.appendChild(link);
 							//eval(xhr.responseText)
+							break;
+						case "svgPack":
+							window["resources"]["svgpack"] = URL.createObjectURL(xhr.response);
 							break;
 						case "font":
 							var font = new FontFace("Gilroy", xhr.response);
