@@ -1,3 +1,6 @@
+body{
+	font-family: "Gilroy";
+}
 .content{
 	position: absolute;
     top: 0;
@@ -6,11 +9,61 @@
     height: 100%;
     z-index: 0;
     transition: transform 1.2s cubic-bezier(0.79, 0.01, 0.18, 1);
+	display: block;
 
-    background-color: #1624e6;
-    display: flex;
-    flex-direction: column-reverse;
+	overflow: auto;
 }
 .content.hide-content-to-bottom{
     transform: translate3d(0, 10vh, 0);
+}
+header{
+    background-color: #1624e6;
+    height: 100vh;
+    width: 100%;
+	padding: 0 50px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: center; 
+}
+a{
+    cursor: pointer;
+    text-decoration: none;
+    font: inherit;
+}
+.header-content{
+	max-width: 1400px;
+    width: 100%;
+}
+h1{
+	font-size: 72px;
+    font-weight: bolder;
+    margin: 0;
+    line-height: 80%;
+    color: #fff;
+}
+p{
+	max-width: 350px;
+    font-size: 18px;
+    font-weight: lighter;
+    margin: 0;
+    color: #fff;
+    line-height: 130%;
+}
+.ahead-title{
+    margin-bottom: 45px;
+}
+.menu{
+    height: 110px;
+    display: flex;
+    align-items: center;
+    font-size: 18px;
+}
+.menu a{
+    margin-right: 40px;
+    color: #fff;
+}
+.menu a:last-child{
+    margin-left: auto;
+    margin-right: 0;
 }

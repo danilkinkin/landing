@@ -182,8 +182,8 @@ function update(){
 }
 
 //Application entry point
-preRender();
-//finishLoad();
+//preRender();
+finishLoad();
 
 function preRender(){
 	var logo = new UI("canvas")

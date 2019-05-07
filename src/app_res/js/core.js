@@ -8,15 +8,21 @@ window["render"] = ()=>{
 	console.log(app)
 	window.renderPage();
 
-	let bootScreen = UI.create(document.getElementById("boot-screen"));
-	bootScreen.append(icon.get("ic-wave", "wave-boot-screen"));
+	let bootScreen;
+
+	if(document.getElementById("boot-screen")){
+		bootScreen = UI.create(document.getElementById("boot-screen"));
+		bootScreen.append(icon.get("ic-wave", "wave-boot-screen"));
+	}else{
+		app.body.class().remove("hide-content-to-bottom");
+	}
 
 	setTimeout(()=>{
-		bootScreen.class().add("hide-boot-screen");	
+		if(bootScreen) bootScreen.class().add("hide-boot-screen");	
 		app.body.class().remove("hide-content-to-bottom");
 
 		setTimeout(()=>{
-			//bootScreen.destroy();
+			if(bootScreen) bootScreen.destroy();
 		}, 1400);
 	}, 180);
 }

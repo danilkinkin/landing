@@ -4,25 +4,27 @@ var DEBUG = true;
 window["resources"] = {};
 
 document.addEventListener("DOMContentLoaded", ()=>{
-	window.renderBootScreen();
+	window.renderBootScreen(DEBUG);
 });
 
-window.renderBootScreen = ()=>{
-	var canvas = document.createElement("canvas");
-	canvas.className = "boot-screen-canvas";
-	canvas.setAttribute("width", "178");
-	canvas.setAttribute("height", "245");
+window.renderBootScreen = (onlyResourcesLoad)=>{
+	if(!onlyResourcesLoad){
+		var canvas = document.createElement("canvas");
+		canvas.className = "boot-screen-canvas";
+		canvas.setAttribute("width", "178");
+		canvas.setAttribute("height", "245");
 
-	var canvasWrapper = document.createElement("div");
-	canvasWrapper.className = "boot-screen";
-	canvasWrapper.setAttribute("id", "boot-screen")
-	canvasWrapper.appendChild(canvas);
+		var canvasWrapper = document.createElement("div");
+		canvasWrapper.className = "boot-screen";
+		canvasWrapper.setAttribute("id", "boot-screen")
+		canvasWrapper.appendChild(canvas);
 
-	document.body.appendChild(canvasWrapper);
+		document.body.appendChild(canvasWrapper);
 
-	var ctx 				= canvas.getContext('2d');
-	var time 				= 0;
-	var start 				= performance.now();
+		var ctx 				= canvas.getContext('2d');
+		var time 				= 0;
+		var start 				= performance.now();
+	}	
 	var percentload 		= 0;
 	var resources 			= [];
 
@@ -33,8 +35,8 @@ window.renderBootScreen = ()=>{
 			{type: "js", src: "app_res/js/core.js"},
 			{type: "js", src: "app_res/js/pages/index.js"},
 			{type: "css", src: "app_res/css/main.css"},
-			{type: "font", src: "app_res/fonts/Gilroy-Light.otf"},
-			{type: "font", src: "app_res/fonts/Gilroy-ExtraBold.otf"},
+			{type: "font", src: "app_res/fonts/Gilroy-Light.otf", glif: "Gilroy-Light"},
+			{type: "font", src: "app_res/fonts/Gilroy-ExtraBold.otf", glif: "Gilroy-ExtraBold"},
 			{type: "svgPack", src: "app_res/img/icons.svg"}
 		];
 	}else{
@@ -49,12 +51,13 @@ window.renderBootScreen = ()=>{
 		window["successLoadLocale"] = ()=>{
 			console.log("All resources loaded")
 			percentload = 100;
+			if(onlyResourcesLoad) window["render"]();
 		}
 		console.log("Load locale")
 		window["loadLocale"]();
 	})
 
-	requestAnimationFrame(drawFrame);
+	if(!onlyResourcesLoad) requestAnimationFrame(drawFrame);
 
 
 	function loadResource(resources, callback, idRes){
@@ -104,7 +107,7 @@ window.renderBootScreen = ()=>{
 							window["resources"]["svgpack"] = URL.createObjectURL(xhr.response);
 							break;
 						case "font":
-							var font = new FontFace("Gilroy", xhr.response);
+							var font = new FontFace(resources[idRes].glif, xhr.response);
 							font.load().then(function(loaded_face) {
 								document.fonts.add(loaded_face);
 							}).catch(function(error) {
