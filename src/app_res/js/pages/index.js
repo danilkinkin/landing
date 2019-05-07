@@ -35,6 +35,12 @@ window.renderPage = ()=>{
 		).append(
 			UI.create("main").content("main")
 		).append(
-			UI.create("footer").content("footer")
+			UI.create("footer")
+				.append(
+					UI.create().class("footer-title").content("Danilkinkin")
+				)
+				.append(
+					UI.create().class("footer-last-update").content("Danilkinkin 2019")
+				)
 		);
 }

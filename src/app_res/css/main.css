@@ -67,3 +67,26 @@ p{
     margin-left: auto;
     margin-right: 0;
 }
+footer{
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+.footer-title{
+    color: #fff;
+    font-size: 72px;
+    font-weight: 900;
+    padding: 38px 56px;
+    background-color: #1624e6;
+}
+.footer-last-update{
+    padding: 40px;
+    box-sizing: border-box;
+    font-size: 13px;
+    font-weight: lighter;
+    color: #707070;
+    position: absolute;
+    bottom: 0;
+}
