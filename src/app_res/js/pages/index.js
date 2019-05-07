@@ -33,7 +33,21 @@ window.renderPage = ()=>{
 						)
 				)
 		).append(
-			UI.create("main").content("main")
+			UI.create("main")
+				.append(
+					UI.create().class("work-card")
+						.append(
+							UI.create().class("work-card-bg-wrp")
+								.append(
+									UI.create()
+										.class("work-card-bg")
+										.style().add("backgroundImage", "url('http://localhost:8080/works/clockTab/preview.png')")
+								)								
+						)
+						.append(
+							UI.create().class("work-card-title").content("ClockTab")
+						)
+				)
 		).append(
 			UI.create("footer")
 				.append(
