@@ -3,7 +3,7 @@ var icon = null;
 
 
 window["render"] = ()=>{
-	app = new Core();
+	app = new Core(!document.getElementById("boot-screen"));
 	icon = new Icon();
 	console.log(app)
 	window.renderPage();
@@ -13,8 +13,6 @@ window["render"] = ()=>{
 	if(document.getElementById("boot-screen")){
 		bootScreen = UI.create(document.getElementById("boot-screen"));
 		bootScreen.append(icon.get("ic-wave", "wave-boot-screen"));
-	}else{
-		app.body.class().remove("hide-content-to-bottom");
 	}
 
 	setTimeout(()=>{
@@ -37,9 +35,9 @@ window["loadLocale"] = ()=>{
 		});
 }
 
-function Core(){
+function Core(dnotUseAnim){
 	this.page = UI.create(document.body);
-	this.body = UI.create().class("content hide-content-to-bottom").insert(this.page);
+	this.body = UI.create().class("content"+(dnotUseAnim? "" : " hide-content-to-bottom")).insert(this.page);
 }
 
 function Icon(){

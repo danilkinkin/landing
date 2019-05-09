@@ -90,3 +90,26 @@ footer{
     position: absolute;
     bottom: 0;
 }
+.work-card{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.work-card-bg-wrp{
+    transform: scale(.8);
+}
+.work-card-bg{
+    width: inherit;
+    height: inherit;
+    background-position: 50%;
+    background-size: cover;
+}
+.work-card-title{
+    color: #fff;
+    font-size: 62px;
+    font-weight: 900;
+    padding: 26px 56px;
+    background-color: #000;
+    position: absolute;
+}

@@ -1,5 +1,45 @@
+var projects = [
+	new workCard({
+		name: "ClockTab",
+		preview: "http://localhost:8080/works/clockTab/preview.png"
+	}),
+	new workCard({
+		name: "Sky Cube",
+		preview: "http://localhost:8080/works/sky-cube/preview.png"
+	}),
+	new workCard({
+		name: "ClockTab",
+		preview: "http://localhost:8080/works/clockTab/preview.png"
+	}),
+	new workCard({
+		name: "Sky Cube",
+		preview: "http://localhost:8080/works/sky-cube/preview.png"
+	}),
+	new workCard({
+		name: "ClockTab",
+		preview: "http://localhost:8080/works/clockTab/preview.png"
+	}),
+	new workCard({
+		name: "Sky Cube",
+		preview: "http://localhost:8080/works/sky-cube/preview.png"
+	}),
+	new workCard({
+		name: "ClockTab",
+		preview: "http://localhost:8080/works/clockTab/preview.png"
+	}),
+	new workCard({
+		name: "Sky Cube",
+		preview: "http://localhost:8080/works/sky-cube/preview.png"
+	})
+]
+var bodyWidth = 0;
+var mainBlock;
+
 window.renderPage = ()=>{
-	console.log("Render page");
+	console.log("Render page");	
+
+	mainBlock = UI.create("main");
+	projects.forEach((p)=>{mainBlock.append(p.dom)});
 
 	app.body
 		.append(
@@ -33,21 +73,7 @@ window.renderPage = ()=>{
 						)
 				)
 		).append(
-			UI.create("main")
-				.append(
-					UI.create().class("work-card")
-						.append(
-							UI.create().class("work-card-bg-wrp")
-								.append(
-									UI.create()
-										.class("work-card-bg")
-										.style().add("backgroundImage", "url('http://localhost:8080/works/clockTab/preview.png')")
-								)								
-						)
-						.append(
-							UI.create().class("work-card-title").content("ClockTab")
-						)
-				)
+			mainBlock
 		).append(
 			UI.create("footer")
 				.append(
@@ -57,4 +83,44 @@ window.renderPage = ()=>{
 					UI.create().class("footer-last-update").content("Danilkinkin 2019")
 				)
 		);
+
+	frame();
 }
+
+function workCard(data){
+	this.bgWrp = UI.create().class("work-card-bg-wrp")
+		.append(
+			UI.create()
+				.class("work-card-bg")
+				.style().add("backgroundImage", "url('"+data.preview+"')")
+		);
+	this.dom = UI.create().class("work-card")
+		.append(
+			this.bgWrp								
+		)
+		.append(
+			UI.create().class("work-card-title").content(data.name)
+		);
+				
+}
+
+function frame(){
+	if(app.body.html.clientWidth != bodyWidth){
+		bodyWidth = app.body.html.clientWidth;
+		mainBlock.style()
+			.add("paddingTop", ((3*app.body.html.clientHeight)/4.4-20)/4+"px")
+			.add("marginBottom", -((3*app.body.html.clientHeight)/4.4-20)/4+"px")
+		projects.forEach((p)=>{
+			p.dom.style().add("height", ((3*app.body.html.clientHeight)/4.4-20)+"px");
+			let w = bodyWidth>=1300? 1200 : bodyWidth-100;
+			p.bgWrp.style()
+				.add("width", w+"px")
+				.add("height", (app.body.html.clientHeight/2.2)+"px")
+		})
+	}
+	requestAnimationFrame(frame);
+}
+
+
+
+
