@@ -32,8 +32,10 @@ var projects = [
 		preview: "http://localhost:8080/works/sky-cube/preview.png"
 	})
 ]
-var bodyWidth = 0;
 var mainBlock;
+var selectWork = 0;
+var workCardHeight;
+var scrl = 0;
 
 window.renderPage = ()=>{
 	console.log("Render page");	
@@ -84,7 +86,55 @@ window.renderPage = ()=>{
 				)
 		);
 
-	frame();
+	app.onscrollpage = ()=>{
+		//console.log("onscroll", app.scrollHeight)
+		for(var i=selectWork<2? 0 : selectWork-2; i<(selectWork+2>=projects.length? projects.length : selectWork+2); i++){
+			//console.log(i)
+			var offsetTop = projects[i].dom.html.offsetTop+workCardHeight*0.5;
+
+			var t = 0 ;
+
+			t = Transition.bound(((offsetTop-app.scrollHeight-app.heightPage*0.5)/app.heightPage), -1, 1);
+			t = t < 0? 1+t : 1-t;
+			t = Transition.quartic.easeOut(1-t);
+			t = t*t
+			t = 1-t;
+
+			var s = (1-Transition.bound(t/(app.heightPage*0.5*0.6), 0, 1))*0.2*Transition.quartic.ease(scrl);
+			s = Math.round(s*1000)/1000
+			
+			if(Math.abs(app.scrollHeight+app.heightPage*0.5 - projects[selectWork].dom.html.offsetTop - workCardHeight*0.5) > 
+			   Math.abs(app.scrollHeight+app.heightPage*0.5 - offsetTop)){
+			   	projects[selectWork].dom.class().remove("selected-card");
+				selectWork = i;
+				projects[selectWork].dom.class().add("selected-card")
+			}
+
+			t = t * (app.scrollHeight+app.heightPage*0.5 - offsetTop)
+
+			projects[i].dom.style().add("transform", "translate3D("+0+"px,"+t+"px,0px)");
+		}
+	}
+	app.onresizepage = ()=>{
+		workCardHeight = (3*app.heightPage)/4.4-20;
+		mainBlock.style()
+			.add("paddingTop", ((3*app.heightPage)/4.4-20)/4+"px")
+			.add("marginBottom", -((3*app.heightPage)/4.4-20)/4+"px")
+		projects.forEach((p)=>{
+			p.dom.style().add("height", workCardHeight+"px");
+			let w = app.widthPage>=1300? 1200 : app.widthPage-100;
+			p.bgWrp.style()
+				.add("width", w+"px")
+				.add("height", (app.heightPage/2.2)+"px")
+		});
+		/*projects.forEach((p)=>{
+			p.dom
+		});*/
+
+
+		
+	}
+	app.onresizepage();
 }
 
 function workCard(data){
@@ -103,24 +153,3 @@ function workCard(data){
 		);
 				
 }
-
-function frame(){
-	if(app.body.html.clientWidth != bodyWidth){
-		bodyWidth = app.body.html.clientWidth;
-		mainBlock.style()
-			.add("paddingTop", ((3*app.body.html.clientHeight)/4.4-20)/4+"px")
-			.add("marginBottom", -((3*app.body.html.clientHeight)/4.4-20)/4+"px")
-		projects.forEach((p)=>{
-			p.dom.style().add("height", ((3*app.body.html.clientHeight)/4.4-20)+"px");
-			let w = bodyWidth>=1300? 1200 : bodyWidth-100;
-			p.bgWrp.style()
-				.add("width", w+"px")
-				.add("height", (app.body.html.clientHeight/2.2)+"px")
-		})
-	}
-	requestAnimationFrame(frame);
-}
-
-
-
-

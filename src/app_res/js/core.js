@@ -36,8 +36,24 @@ window["loadLocale"] = ()=>{
 }
 
 function Core(dnotUseAnim){
+	this.__proto__ = new EventTarget();
 	this.page = UI.create(document.body);
 	this.body = UI.create().class("content"+(dnotUseAnim? "" : " hide-content-to-bottom")).insert(this.page);
+	this.scrollHeight = this.body.html.scrollTop;
+	this.heightPage = document.body.clientHeight;
+	this.widthPage = document.body.clientWidth;
+
+	this.onscrollpage = ()=>{};
+	this.onresizepage = ()=>{};
+	this.body.html.onscroll = ()=>{
+		this.scrollHeight = this.body.html.scrollTop;
+		this.onscrollpage();
+	};
+	window.onresize = ()=>{
+		this.heightPage = document.body.clientHeight;
+		this.widthPage = document.body.clientWidth;
+		this.onresizepage();
+	}
 }
 
 function Icon(){

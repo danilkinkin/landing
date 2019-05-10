@@ -33,6 +33,7 @@ window.renderBootScreen = (onlyResourcesLoad)=>{
 			{type: "js", src: "app_res/js/UI.js"},
 			{type: "js", src: "app_res/js/localization.js"},
 			{type: "js", src: "app_res/js/core.js"},
+			{type: "js", src: "app_res/js/transition.js"},
 			{type: "js", src: "app_res/js/pages/index.js"},
 			{type: "css", src: "app_res/css/main.css"},
 			{type: "font", src: "app_res/fonts/Gilroy-Light.otf", glif: "Gilroy-Light"},

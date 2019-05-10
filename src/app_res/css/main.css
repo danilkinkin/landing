@@ -97,13 +97,30 @@ footer{
     justify-content: center;
 }
 .work-card-bg-wrp{
-    transform: scale(.8);
+    transform: scale(0.8);
+    box-shadow: 0px 1px 30px rgba(0, 0, 0, 0);
+    transition: transform 0.45s cubic-bezier(0.17, 0.81, 0.26, 1);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.work-card.selected-card .work-card-bg-wrp{
+    transform: scale(1);
+    box-shadow: 0px 1px 45px rgba(0, 0, 0, .17);
+    transition: transform 0.85s cubic-bezier(.16, 1, .29, .99);
 }
 .work-card-bg{
     width: inherit;
     height: inherit;
     background-position: 50%;
     background-size: cover;
+    transform: scale(1.5);
+    transition: transform 0.45s cubic-bezier(0.17, 0.81, 0.26, 1);
+}
+.work-card.selected-card .work-card-bg{
+    transform: scale(1);
+    transition: transform 0.85s cubic-bezier(.16, 1, .29, .99);
 }
 .work-card-title{
     color: #fff;
