@@ -87,10 +87,8 @@ window.renderPage = ()=>{
 		);
 
 	app.onscrollpage = ()=>{
-		//console.log("onscroll", app.scrollHeight)
 		for(var i=selectWork<2? 0 : selectWork-2; i<(selectWork+2>=projects.length? projects.length : selectWork+2); i++){
-			//console.log(i)
-			var offsetTop = projects[i].dom.html.offsetTop+workCardHeight*0.5;
+			var offsetTop = projects[0].dom.html.offsetTop+workCardHeight*i+workCardHeight*0.5;
 
 			var t = 0 ;
 
@@ -101,18 +99,23 @@ window.renderPage = ()=>{
 			t = 1-t;
 
 			var s = (1-Transition.bound(t/(app.heightPage*0.5*0.6), 0, 1))*0.2*Transition.quartic.ease(scrl);
-			s = Math.round(s*1000)/1000
-			
-			if(Math.abs(app.scrollHeight+app.heightPage*0.5 - projects[selectWork].dom.html.offsetTop - workCardHeight*0.5) > 
+			s = Math.round(s*1000)/1000;
+
+			if(Math.abs(app.scrollHeight+app.heightPage*0.5 - projects[0].dom.html.offsetTop-selectWork*workCardHeight - workCardHeight*0.5) > 
 			   Math.abs(app.scrollHeight+app.heightPage*0.5 - offsetTop)){
-			   	projects[selectWork].dom.class().remove("selected-card");
+			   	if(projects[selectWork]) projects[selectWork].dom.class().remove("selected-card");
 				selectWork = i;
 				projects[selectWork].dom.class().add("selected-card")
 			}
 
+			if(selectWork == projects.length-1 && offsetTop <= app.scrollHeight){
+				projects[selectWork].dom.class().remove("selected-card");
+				selectWork = projects.length;
+			}
+
 			t = t * (app.scrollHeight+app.heightPage*0.5 - offsetTop)
 
-			projects[i].dom.style().add("transform", "translate3D("+0+"px,"+t+"px,0px)");
+			if(projects[i]) projects[i].dom.style().add("transform", "translate3D("+0+"px,"+t+"px,0px)");
 		}
 	}
 	app.onresizepage = ()=>{
