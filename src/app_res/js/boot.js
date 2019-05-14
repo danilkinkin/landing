@@ -21,12 +21,12 @@ window.renderBootScreen = (onlyResourcesLoad)=>{
 
 		document.body.appendChild(canvasWrapper);
 
-		var ctx 				= canvas.getContext('2d');
-		var time 				= 0;
-		var start 				= performance.now();
+		var ctx 	= canvas.getContext('2d');
+		var time 	= 0;
+		var start 	= performance.now();
 	}	
-	var percentload 		= 0;
-	var resources 			= [];
+	var percentload = 0;
+	var resources 	= [];
 
 	if(DEBUG){
 		resources = [
@@ -45,7 +45,9 @@ window.renderBootScreen = (onlyResourcesLoad)=>{
 			{type: "js", src: "app_res/app.js"},
 			//{type: "css", src: "app_res/css/style.css"},	
 			{type: "font", src: "app_res/fonts/Gilroy-Light.otf"},
-			{type: "font", src: "app_res/fonts/Gilroy-ExtraBold.otf"}
+			{type: "font", src: "app_res/fonts/Gilroy-ExtraBold.otf"},
+			{type: "css", src: "app_res/css/main.css"},
+			{type: "svgPack", src: "app_res/img/icons.svg"}
 		];
 	}
 	loadResource(resources, ()=>{

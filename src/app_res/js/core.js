@@ -42,9 +42,21 @@ function Core(dnotUseAnim){
 	this.scrollHeight = this.body.html.scrollTop;
 	this.heightPage = document.body.clientHeight;
 	this.widthPage = document.body.clientWidth;
+	this.speedScroll = 0; //[0..3]
+	this.scrollDirection = true;
+
+	var startAnimationFrame = performance.now();
+	var scrollHeightLast = 0;
+	var scrollDelta = 0;
 
 	this.onscrollpage = ()=>{};
 	this.onresizepage = ()=>{};
+	this.onspeed = ()=>{};
+
+	this.setPosition = ()=>{
+
+	}
+
 	this.body.html.onscroll = ()=>{
 		this.scrollHeight = this.body.html.scrollTop;
 		this.onscrollpage();
@@ -54,6 +66,30 @@ function Core(dnotUseAnim){
 		this.widthPage = document.body.clientWidth;
 		this.onresizepage();
 	}
+	var frame = (timestamp)=>{
+		var timePassed = timestamp - startAnimationFrame;
+		//console.log(this.scrollHeight, scrollHeightLast)
+		scrollDelta = this.scrollHeight - scrollHeightLast;
+		scrollHeightLast = this.scrollHeight;
+		var lastScrollSpeed = this.speedScroll;
+
+		if(Math.abs(scrollDelta) >= 60) this.speedScroll = 3;
+		else{
+			if(Math.abs(scrollDelta) >= 35) this.speedScroll = 2;
+			else{
+				if(Math.abs(scrollDelta) >= 6) this.speedScroll = 1;
+				else{
+					this.speedScroll = 0;
+				}
+			}
+		}
+		this.scrollDirection = scrollDelta >= 0;
+		if(lastScrollSpeed != this.speedScroll) this.onspeed();
+
+		startAnimationFrame = timestamp;
+		requestAnimationFrame(frame);
+	}
+	frame();
 }
 
 function Icon(){
