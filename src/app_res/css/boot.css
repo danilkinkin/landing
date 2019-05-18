@@ -39,7 +39,7 @@ body{
 .boot-screen-canvas{
 	max-width: 100%;
 }
-.content{
+.scroll-content{
     display: none;
 }
 

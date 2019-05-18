@@ -71,7 +71,7 @@ class UI{
 	}
 
 	attribute(key, value){
-		if(key) this._dom.setAttribute(key, (value == undefined ? undefined : value) || "");
+		if(key) this._dom.setAttribute(key, /*(value == undefined ? undefined : value) || ""*/value);
 		let _dom = this._dom;
 
 		return new class UIAttribute extends UI{

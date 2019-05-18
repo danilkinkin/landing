@@ -59,7 +59,7 @@ window.renderPage = ()=>{
 		this.height = app.heightPage;
 		this.force = 1;
 		this.update = ()=>{
-			//console.log(this.force)
+			//console.log(clipHeader)
 			clipHeaderBlue.update(this.force, this.height);
 			clipHeaderWhite.update(-this.force, this.height);
 			if(this.force > 0) headerMenu.style().add("zIndex", "-1");
@@ -72,24 +72,26 @@ window.renderPage = ()=>{
 		this.ellipse = UI.create(document.getElementById("boot-screen-clip-path-blue").getElementsByTagName("ellipse")[0]);
 		this.update = (force, height)=>{
 			//console.log(height)
+			height -= force*0.5;
 			this.rect.attribute("height", height);
 			this.ellipse.attribute("cy", height);
-			this.ellipse.attribute("ry", force > 1? force : 1);
+			this.ellipse.attribute("ry", force > 0? force : 0);
 		}
 	}
 	var clipHeaderWhite = new function(){
 		this.rect = UI.create(document.getElementById("boot-screen-clip-path-white").getElementsByTagName("rect")[0]);
 		this.ellipse = UI.create(document.getElementById("boot-screen-clip-path-white").getElementsByTagName("ellipse")[0]);
 		this.update = (force, height)=>{
+			height += force*0.5;
 			let h = app.heightPage - height;
-			this.rect.attribute("y", height != 0? height : 1);
-			this.rect.attribute("height", h != 0? h : 1);
-			this.ellipse.attribute("cy", height != 0? height : 1);
-			this.ellipse.attribute("ry", force > 1? force : 1);
+			this.rect.attribute("y", height > 0? height : 0);
+			this.rect.attribute("height", h > 0? h+app.heightPage*0.5 : 0);
+			this.ellipse.attribute("cy", height > 0? height : 0);
+			this.ellipse.attribute("ry", force > 0? force : 0);
 		}
 	}
 
-	app.body
+	app.content
 		.append(
 			UI.create("header")
 				.append(
@@ -184,7 +186,7 @@ window.renderPage = ()=>{
 
 			t = t * (app.scrollHeight+app.heightPage*0.5 - offsetTop);
 
-			clipHeader.height = app.heightPage+((app.heightPage - app.scrollHeight)/app.heightPage)*200-200;
+			if(app.heightPage >= app.scrollHeight) clipHeader.height = app.heightPage+((app.heightPage - app.scrollHeight)/app.heightPage)*200-200;
 			//clipHeaderBlue.force = s;
 
 
@@ -217,21 +219,19 @@ window.renderPage = ()=>{
 
 		let realLocalScrollSpeed = app.speedScroll*(+app.scrollDirection*2-1);//>=3? 0.25 : 1;
 
-		localScrollSpeed += (realLocalScrollSpeed - localScrollSpeed)*(Math.abs(realLocalScrollSpeed - localScrollSpeed)<0.1? 0.2 : 0.09);
+		localScrollSpeed += (realLocalScrollSpeed - localScrollSpeed)*(0.1);
+		if(Math.abs(realLocalScrollSpeed - localScrollSpeed) < 0.01) localScrollSpeed = realLocalScrollSpeed;
 
 		for(var i=selectWork<2? 0 : selectWork-2; i<(selectWork+2>=projects.length? projects.length : selectWork+2); i++){
 			if(projects[i]) projects[i].dom.style().add("transform", "translate3D("+0+"px,"+projects[i].offestY/**localScrollSpeed*/+"px,0px)");
 		}
 
-		clipHeader.force = localScrollSpeed*150;
+		if(app.heightPage >= app.scrollHeight){
+			clipHeader.force = localScrollSpeed*150;
+			clipHeader.update();
+		}
 
-		//clipHeader.force = clipHeader.force<1? 0 : clipHeader.force
-
-		//clipHeader.force = app.scrollDirection? clipHeader.force : 1;
-
-		//console.log(app.scrollDirection)
-
-		clipHeader.update();
+		
 		
 
 		startAnimationFrame = timestamp;

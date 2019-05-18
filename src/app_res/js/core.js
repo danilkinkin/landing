@@ -1,6 +1,6 @@
 var app = null;
 var icon = null;
-
+var scrollbar = null;
 
 window["render"] = ()=>{
 	app = new Core(!document.getElementById("boot-screen"));
@@ -38,16 +38,25 @@ window["loadLocale"] = ()=>{
 function Core(dnotUseAnim){
 	this.__proto__ = new EventTarget();
 	this.page = UI.create(document.body);
-	this.body = UI.create().class("content"+(dnotUseAnim? "" : " hide-content-to-bottom")).insert(this.page);
+	this.body = UI.create().class("scroll-content "+(dnotUseAnim? "" : " hide-content-to-bottom")).insert(this.page);
+	this.content;
 	this.scrollHeight = this.body.html.scrollTop;
 	this.heightPage = document.body.clientHeight;
 	this.widthPage = document.body.clientWidth;
 	this.speedScroll = 0; //[0..3]
 	this.scrollDirection = true;
 
+	var scrollbar = window.Scrollbar;
 	var startAnimationFrame = performance.now();
 	var scrollHeightLast = 0;
 	var scrollDelta = 0;
+
+	scrollbar.use(window.OverscrollPlugin);
+	scrollbar = scrollbar.init(this.body.html, {
+		damping: 0.08,
+		alwaysShowTracks: true
+	});
+	this.content = UI.create(scrollbar.contentEl).class("content");
 
 	this.onscrollpage = ()=>{};
 	this.onresizepage = ()=>{};
@@ -57,10 +66,17 @@ function Core(dnotUseAnim){
 
 	}
 
-	this.body.html.onscroll = ()=>{
+	scrollbar.addListener((status) => {
+		//scrollDelta = status.offset.y-scollOffset;
+		//scollOffset = status.offset.y;
+		//console.log(status.offset.y)
+		this.scrollHeight = status.offset.y;
+		this.onscrollpage();
+	});
+	/*this.body.html.onscroll = ()=>{
 		this.scrollHeight = this.body.html.scrollTop;
 		this.onscrollpage();
-	};
+	};*/
 	window.onresize = ()=>{
 		this.heightPage = document.body.clientHeight;
 		this.widthPage = document.body.clientWidth;

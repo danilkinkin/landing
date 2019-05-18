@@ -1,19 +1,22 @@
 body{
 	font-family: "Gilroy";
 }
-.content{
-	position: absolute;
+.scroll-content{
+    position: absolute;
     top: 0;
     left: 0;
     width: 100%;
-    height: 100%;
+    height: 100vh;
     z-index: 0;
     transition: transform 1.2s cubic-bezier(0.79, 0.01, 0.18, 1);
-	display: block;
+    display: block;
 
-	overflow: auto;
+    overflow: auto;
 }
-.content.hide-content-to-bottom{
+.content{
+	
+}
+.scroll-content.hide-content-to-bottom{
     transform: translate3d(0, 10vh, 0);
 }
 header{
@@ -35,8 +38,9 @@ a{
     height: 150vh;
     padding-bottom: 50vh;
     display: flex;
-    flex-direction: column-reverse;
-    align-items: center; 
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
     background-color: #1624e6;
     clip-path: url(#boot-screen-clip-path-blue);    
 }
@@ -63,6 +67,8 @@ p{
     display: flex;
     align-items: center;
     font-size: 18px;
+    max-width: 1400px;
+    width: 100%;
 }
 .menu a{
     margin-right: 40px;
@@ -122,6 +128,7 @@ footer{
     background-size: cover;
     transform: scale(1.5);
     transition: transform 0.45s cubic-bezier(0.17, 0.81, 0.26, 1);
+    background-color: rgb(80, 88, 207);
 }
 .work-card.selected-card .work-card-bg{
     transform: scale(1);
@@ -140,21 +147,24 @@ footer{
     box-sizing: border-box;
     position: absolute;
     width: 100%;
-    height: 100%;
+    height: 150vh;
+    padding-bottom: 50vh;
     top: 0;
     left: 0;
     clip-path: url(#boot-screen-clip-path-white);
     background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
 }
 .menu-scroll{    
     max-width: 1400px;
     width: 100%;
-    margin: auto;
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
 }
 .menu-scroll a{
     color: #2A2A2A;
+}
+.scrollbar-track{
+    display: none !important;
 }
