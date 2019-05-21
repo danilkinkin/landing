@@ -43,6 +43,18 @@ window.renderPage = ()=>{
 	mainBlock = UI.create("main");
 	projects.forEach((p)=>{mainBlock.append(p.dom)});
 
+	var headerMenuFull = UI.create()
+		.class("menu")
+		.append(
+			UI.create("a").attribute("href", "").content("Контакты")
+		).append(
+			UI.create("a").attribute("href", "").content("Работы")
+		).append(
+			UI.create("a").attribute("href", "").content("Резюме")
+		).append(
+			UI.create("a").attribute("href", "").content("hello@danilkinkin.com")
+		)
+
 	var headerMenu = UI.create()
 		.class("menu-scroll-wrp")
 		.append(
@@ -55,39 +67,96 @@ window.renderPage = ()=>{
 				)
 		)
 
-	var clipHeader = new function(){
+	var header = new function(){
 		this.height = app.heightPage;
 		this.force = 1;
 		this.update = ()=>{
-			//console.log(clipHeader)
+			//console.log(header)
 			clipHeaderBlue.update(this.force, this.height);
 			clipHeaderWhite.update(-this.force, this.height);
 			if(this.force > 0) headerMenu.style().add("zIndex", "-1");
 			else headerMenu.style().remove("zIndex");//boot-screen-clip-path-white z-index: -1;
 		}
-	}
 
-	var clipHeaderBlue = new function(){
-		this.rect = UI.create(document.getElementById("boot-screen-clip-path-blue").getElementsByTagName("rect")[0]);
-		this.ellipse = UI.create(document.getElementById("boot-screen-clip-path-blue").getElementsByTagName("ellipse")[0]);
-		this.update = (force, height)=>{
-			//console.log(height)
-			height -= force*0.5;
-			this.rect.attribute("height", height);
-			this.ellipse.attribute("cy", height);
-			this.ellipse.attribute("ry", force > 0? force : 0);
+		var clipHeaderBlue = new function(){
+			this.rect = UI.create(document.getElementById("boot-screen-clip-path-blue").getElementsByTagName("rect")[0]);
+			this.ellipse = UI.create(document.getElementById("boot-screen-clip-path-blue").getElementsByTagName("ellipse")[0]);
+			this.update = (force, height)=>{
+				//console.log(height)
+				height -= force*0.5;
+				this.rect.attribute("height", height);
+				this.ellipse.attribute("cy", height);
+				this.ellipse.attribute("ry", force > 0? force : 0);
+			}
+		}
+		var clipHeaderWhite = new function(){
+			this.rect = UI.create(document.getElementById("boot-screen-clip-path-white").getElementsByTagName("rect")[0]);
+			this.ellipse = UI.create(document.getElementById("boot-screen-clip-path-white").getElementsByTagName("ellipse")[0]);
+			this.update = (force, height)=>{
+				height += force*0.5;
+				let h = app.heightPage - height;
+				this.rect.attribute("y", height > 0? height : 0);
+				this.rect.attribute("height", h > 0? h+app.heightPage*0.5 : 0);
+				this.ellipse.attribute("cy", height > 0? height : 0);
+				this.ellipse.attribute("ry", force > 0? force : 0);
+			}
 		}
 	}
-	var clipHeaderWhite = new function(){
-		this.rect = UI.create(document.getElementById("boot-screen-clip-path-white").getElementsByTagName("rect")[0]);
-		this.ellipse = UI.create(document.getElementById("boot-screen-clip-path-white").getElementsByTagName("ellipse")[0]);
-		this.update = (force, height)=>{
-			height += force*0.5;
-			let h = app.heightPage - height;
-			this.rect.attribute("y", height > 0? height : 0);
-			this.rect.attribute("height", h > 0? h+app.heightPage*0.5 : 0);
-			this.ellipse.attribute("cy", height > 0? height : 0);
-			this.ellipse.attribute("ry", force > 0? force : 0);
+
+	var debugConsole = new function(){
+		var graphs 		= {};
+		var canvas 		= UI.create("canvas").class("debug-console-graph");
+		var ctx 		= canvas.html.getContext('2d');
+		var variables 	= UI.create().class("debug-console-variables");
+
+		this.addGraph = (name)=>{
+			graphs[name] = {
+				domTitle: UI.create("span").class("debug-console-variables-var").content(name+": "),
+				domValue: UI.create("span").class("debug-console-variables-value"),
+				lastDot: {Y: null, X: null}
+			};
+			variables.append(
+				UI.create()
+					.class("debug-console-variables-li")
+					.append(graphs[name].domTitle)
+					.append(graphs[name].domValue)
+			)
+		};
+		this.drawGraph = (name, value)=>{
+			if(!graphs[name]) return;
+
+			graphs[name].domValue.content(value);
+
+			if(value == graphs[name].lastDot.Y) return;
+			if(graphs[name].lastDot.X == canvas.html.width){
+				graphs[name].lastDot.X = 0;
+				canvas.html.width = canvas.html.width;
+			}
+			ctx.beginPath();
+			ctx.strokeStyle = "#fff";
+			ctx.moveTo(graphs[name].lastDot.X, canvas.html.height*(1-graphs[name].lastDot.Y));
+			ctx.lineTo(graphs[name].lastDot.X+1, canvas.html.height*(1-value));
+			ctx.stroke();
+			graphs[name].lastDot.X += 1;
+			graphs[name].lastDot.Y = value;
+
+			//console.log(canvas.html.width, graphs[name].lastDot.X, graphs[name].lastDot.Y)
+		};		
+
+		app.page
+			.append(
+				UI.create()
+					.class("debug-console")
+					.append(
+						variables
+					)
+					.append(
+						canvas
+					)
+			);
+
+		function renderGraphs(){
+
 		}
 	}
 
@@ -111,19 +180,9 @@ window.renderPage = ()=>{
 										.content("Привет, я Данил Захваткин, "
 											+"мне 20 и я занимаюсь разработкой web приложений, "
 											+"сайтов и так же немного увлекаюсь web дизайном.")
-								).append(
-									UI.create()
-										.class("menu")
-										.append(
-											UI.create("a").attribute("href", "").content("Контакты")
-										).append(
-											UI.create("a").attribute("href", "").content("Работы")
-										).append(
-											UI.create("a").attribute("href", "").content("Резюме")
-										).append(
-											UI.create("a").attribute("href", "").content("hello@danilkinkin.com")
-										)
 								)
+						).append(
+							headerMenuFull							
 						)
 				).append(
 					headerMenu
@@ -186,7 +245,7 @@ window.renderPage = ()=>{
 
 			t = t * (app.scrollHeight+app.heightPage*0.5 - offsetTop);
 
-			if(app.heightPage >= app.scrollHeight) clipHeader.height = app.heightPage+((app.heightPage - app.scrollHeight)/app.heightPage)*200-200;
+			if(app.heightPage >= app.scrollHeight) header.height = app.heightPage+((app.heightPage - app.scrollHeight)/app.heightPage)*200-200;
 			//clipHeaderBlue.force = s;
 
 
@@ -221,23 +280,26 @@ window.renderPage = ()=>{
 
 		localScrollSpeed += (realLocalScrollSpeed - localScrollSpeed)*(0.1);
 		if(Math.abs(realLocalScrollSpeed - localScrollSpeed) < 0.01) localScrollSpeed = realLocalScrollSpeed;
-
+		let smoothCardTrans = Transition.bound(Math.abs(localScrollSpeed)/2, 0, 1)*0.8;
+		//console.log(smoothCardTrans)
+		smoothCardTrans = Transition.quartic.easeOut(1-smoothCardTrans);
+		debugConsole.drawGraph("smoothCardTrans", smoothCardTrans);
 		for(var i=selectWork<2? 0 : selectWork-2; i<(selectWork+2>=projects.length? projects.length : selectWork+2); i++){
-			if(projects[i]) projects[i].dom.style().add("transform", "translate3D("+0+"px,"+projects[i].offestY/**localScrollSpeed*/+"px,0px)");
+			if(projects[i]) projects[i].dom.style().add("transform", "translate3D("+0+"px,"+projects[i].offestY*smoothCardTrans+"px,0px)");
 		}
 
 		if(app.heightPage >= app.scrollHeight){
-			clipHeader.force = localScrollSpeed*150;
-			clipHeader.update();
-		}
-
-		
-		
+			header.force = localScrollSpeed*150;
+			header.update();
+		}		
 
 		startAnimationFrame = timestamp;
 		requestAnimationFrame(frame);
 	}
 	frame();
+
+
+	debugConsole.addGraph("smoothCardTrans");
 }
 
 function workCard(data){

@@ -38,6 +38,7 @@ window.renderBootScreen = (onlyResourcesLoad)=>{
 			{type: "js", src: "app_res/js/overscroll.js"},
 			{type: "js", src: "app_res/js/pages/index.js"},
 			{type: "css", src: "app_res/css/main.css"},
+			{type: "css", src: "app_res/css/debug.css"},
 			{type: "font", src: "app_res/fonts/Gilroy-Light.otf", glif: "Gilroy-Light"},
 			{type: "font", src: "app_res/fonts/Gilroy-ExtraBold.otf", glif: "Gilroy-ExtraBold"},
 			{type: "svgPack", src: "app_res/img/icons.svg"}
