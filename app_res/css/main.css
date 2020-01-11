@@ -1,0 +1,46 @@
+body {
+	margin: 0;
+	font-family: "Gilroy";
+	user-select: none;
+	height: 100vh;
+	overflow: hidden;
+}
+main {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    max-width: 1760px;
+    padding: 0px 150px;
+    padding-bottom: 45px;
+    width: 100%;
+    margin: auto;
+    color: #0000FF;
+    box-sizing: border-box;
+}
+.age {
+    white-space: nowrap;
+}
+.footer {
+    display: flex;
+}
+h1 {
+    font-size: 72px;
+    margin: 0;
+}
+h3, p {
+    font-size: 22px;
+    max-width: 380px;
+    margin: 0;
+    font-weight: 300;
+}
+p {
+    margin-top: 60px;
+    margin-bottom: 45px;
+}
+a {
+    font-size: 18px;
+}
+.mail-link {
+    margin-left: auto;
+}

@@ -1,0 +1,24 @@
+{
+  "name": "danilkinkin-site-simple",
+  "version": "1.0.0",
+  "description": "This is a stub to the main site.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Danilkinkin/danilkinkin-site-stub.git"
+  },
+  "author": "Danilkinkin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Danilkinkin/danilkinkin-site-stub/issues"
+  },
+  "homepage": "https://github.com/Danilkinkin/danilkinkin-site-stub#readme",
+  "dependencies": {
+    "ejs": "^3.0.1",
+    "express": "^4.17.1"
+  }
+}
