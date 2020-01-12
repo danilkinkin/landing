@@ -1,0 +1,15 @@
+.collpase {
+	height: 0;
+    overflow: hidden;
+    transition: height 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+}
+.collpase-root-entered: {
+	height: auto;
+	overflow: visible;
+}
+.collpase-wrapper: {
+	display: flex;
+}
+.collpase-wrapper-inner: {
+	width: 100%;
+}

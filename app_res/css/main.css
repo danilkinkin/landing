@@ -1,21 +1,32 @@
 body {
 	margin: 0;
 	font-family: "Gilroy";
-	user-select: none;
 	height: 100vh;
 	overflow: hidden;
 }
-main {
-    height: 100%;
+::selection {
+    color: #fff;
+    background-color: #0000FF;
+}
+main,
+contacts {
+    height: 100vh;   
+    width: 100%;
+    color: #0000FF;
+    box-sizing: border-box;
+    /*background-color: #e3e3ff;*/
+    display: block;
+}
+.body {
+    height: 100vh;
+    width: 100%;    
     display: flex;
     flex-direction: column;
-    justify-content: flex-end;
+    justify-content: flex-end; 
     max-width: 1760px;
+    margin: auto;
     padding: 0px 150px;
     padding-bottom: 45px;
-    width: 100%;
-    margin: auto;
-    color: #0000FF;
     box-sizing: border-box;
 }
 .age {
@@ -40,7 +51,51 @@ p {
 }
 a {
     font-size: 18px;
+    text-decoration: none;
+    color: inherit;
+}
+.footer a {
+    margin-right: 15px;
 }
 .mail-link {
     margin-left: auto;
+    margin-right: 0;
+}
+contacts {
+    background-color: #0000FF;
+    color: #fff;
+}
+contacts h1 {
+    margin-bottom: 50px;
+}
+contacts a {
+    margin-top: 10px;
+}
+contacts .home-link {
+    margin-top: 45px;
+}
+
+@media screen and (max-width: 1050px) {
+    .body {
+        max-width: 850px;
+        padding-left: 50px;
+        padding-right: 50px;
+    }
+}
+@media screen and (max-width: 500px) {
+    .body {
+        max-width: 430px;
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+    h1 {
+        font-size: 52px;
+    }
+    h3, p {
+        font-size: 18px;
+        max-width: 270px;
+    }
+    a {
+        font-size: 15px;
+    }
 }

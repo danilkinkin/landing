@@ -2,7 +2,9 @@ function UIConstructor(element){
 	this._html = element;
 
 	this.append = (appendElem) => {
-		appendElem = appendElem.render || appendElem;
+		appendElem = appendElem && appendElem.render || appendElem;
+
+		if(!appendElem) return this;
 
 		if(appendElem instanceof Element || appendElem instanceof UIConstructor){
 			this._html.appendChild(appendElem._html || appendElem);
@@ -28,10 +30,70 @@ function UIConstructor(element){
 	this.className = (clsName) => {
 		if(clsName) this._html.className = clsName;
 
-		return this;
+		return new UIClassName(this);
+	};
+
+	this.style = (key, value) => {
+		if(this._html.style[key] !== undefined){
+			this._html.style[key] = value || "";
+		}		
+
+		return new UIStyle(this);
 	};
 
 	this.toString = () => this._html.outerHTML;
+
+	this.html = this._html;
+
+	this.insert = (parentNode) => {
+		if(parentNode){
+			if(typeof parentNode == "object") (parentNode._html || parentNode).appendChild(this._html);
+		}
+
+		return this;
+	};
+}
+
+function UIClassName(parent){
+	this.__proto__ = parent;
+
+	this.add = (clsName) => {
+		if(clsName) this._html.classList.add(clsName);
+
+		return this;
+	};
+
+	this.remove = (clsName) => {
+		if(clsName) this._html.classList.remove(clsName);
+
+		return this;
+	};
+}
+
+function UIStyle(parent){
+	this.__proto__ = parent;
+
+	this.add = (key, value) => {
+		if(this._html.style[key] === undefined){
+			console.error(`UI: Unknown style key [${key}]`);
+			return this;
+		}
+
+		this._html.style[key] = value || "";
+
+		return this;
+	};
+
+	this.remove = (key) => {
+		if(this._html.style[key] === undefined){
+			console.error(`UI: Unknown style key [${key}]`);
+			return this;
+		}
+
+		this._html.style[key] = "";
+
+		return this;
+	};
 }
 
 const UIDev = (element) => {

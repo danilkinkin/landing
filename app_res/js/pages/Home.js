@@ -8,36 +8,34 @@ function Age({now}){
 }
 
 function Home(){
-	this.render = UI("main")
+	this.render = UI("main");
+
+	const body = UI().className("body").insert(this.render);
+
+	UI("h1").text("Danilkinkin").insert(body);
+	UI("h3").text("web UX/UI developer").insert(body);
+	UI("p")
+		.text(
+			`Привет, я Данил Захваткин, мне ${
+				Age({now: Date.now()}).toString()
+			} я занимаюсь разработкой веб приложений, сайтов и другими интересными вещами.`
+		)
+		.insert(body);
+	UI()
+		.className("footer")
 		.append(
-			UI("h1").text("Danilkinkin")
+			Link({
+				label: "Контакты",
+				link: "#contacts"
+			})
 		)
 		.append(
-			UI("h3").text("web UX/UI developer")
+			Link({
+				label: "hello@danilkinkin.com",
+				link: "mailto:hello@danilkinkin.com"
+			}).render.className("mail-link")
 		)
-		.append(
-			UI("p").text(
-				`Привет, я Данил Захваткин, мне ${
-					Age({now: Date.now()}).toString()
-				} я занимаюсь разработкой веб приложений, сайтов и другими интересными вещами.`
-			)
-		)
-		.append(
-			UI()
-				.className("footer")
-				.append(
-					Link({
-						label: "Контакты",
-						link: "/contacts"
-					})
-				)
-				.append(
-					Link({
-						label: "hello@danilkinkin.com",
-						link: "mailto:hello@danilkinkin.com"
-					}).render.className("mail-link")
-				)
-		)
+		.insert(body);
 }
 
 export default () => new Home();

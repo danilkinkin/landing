@@ -8,9 +8,9 @@ app
 	.get('/', (req, res) => {
 		res.sendFile(path.join(__dirname, '/index.html'));
 	})
-	.get('*', function(req, res){
+	/*.get('*', function(req, res){
 		res.redirect("/");
-	})
+	})*/
 	.listen(3000, function () {
 		console.log('Start on port 3000');
 	});
