@@ -8,8 +8,12 @@ function Collapse({onUnhide, onHide, onSetHeight, children, height, time = 300})
 					UI().className("collpase-wrapper-inner")
 						.append(children)
 				);
+	let state = (!height && height !== 0)? "uncollapse" : height === 0? "collapse" : "fixed";
 
 	this.collapse = () => {
+		if(state === "collapse") return;
+
+		state = "collapse";
 
 		let height = wrp.html.clientHeight;
 
@@ -36,6 +40,9 @@ function Collapse({onUnhide, onHide, onSetHeight, children, height, time = 300})
 		}, 100);		
 	}
 	this.uncollapse = () => {
+		if(state === "uncollapse") return;
+
+		state = "uncollapse";
 
 		let height = wrp.html.clientHeight;
 
@@ -58,6 +65,10 @@ function Collapse({onUnhide, onHide, onSetHeight, children, height, time = 300})
 		}, time);
 	}
 	this.setHeight = (newHeight) => {
+		if(state === "fixed") return;
+
+		state = "fixed";
+
 		let height = wrp.html.clientHeight;
 
 		if(timer) clearTimeout(timer);
@@ -87,7 +98,7 @@ function Collapse({onUnhide, onHide, onSetHeight, children, height, time = 300})
 		.className("collpase")
 			.add(height === 0? "" : "collpase-root-entered")
 		.style("height", (!height && height !== 0)? "auto" : height+"px")
-			.add("transition", `height ${time}ms cubic-bezier(0.4, 0, 0.2, 1) 0ms`)
+			.add("transition", `height ${time}ms cubic-bezier(0.81, 0, 0.31, 1) 0ms`)
 		.append(wrp)
 }
 

@@ -2,6 +2,12 @@ function UIConstructor(element){
 	this._html = element;
 
 	this.append = (appendElem) => {
+		console.log(appendElem)
+		if(appendElem.forEach){
+			appendElem.forEach(elem => this.append(elem));
+			return this;
+		}
+
 		appendElem = appendElem && appendElem.render || appendElem;
 
 		if(!appendElem) return this;

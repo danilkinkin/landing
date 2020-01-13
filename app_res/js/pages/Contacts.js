@@ -1,6 +1,7 @@
 import UI from "../core/UI.js";
 import { useState, observer } from "../utils/Store.js";
 
+import { ArrowBack as ArrowBackIcon, Home as HomeIcon } from "../core/Icons.js";
 import Link from "../components/custom/Link.js";
 
 function Contacts(){
@@ -46,7 +47,12 @@ function Contacts(){
 	}).render.insert(body);
 	
 	Link({
-		label: "На главную",
+		content: [
+			ArrowBackIcon({
+				size: 24
+			}),
+			UI("span").text("На главную")
+		],
 		link: "#"
 	}).render.className("home-link").insert(body);
 }
