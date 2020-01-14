@@ -25,36 +25,47 @@ function route() {
 }
 
 let home = Collapse({
-	children: Home().render
-		.style("transition", `transform ${800}ms cubic-bezier(0.81, 0, 0.31, 1) 0ms`)
-			.add("transform", "translateY(-150px)"),
+	children: () => {
+		let h = Home();
+		h.render
+			.style("transition", `transform ${800}ms cubic-bezier(0.81, 0, 0.31, 1) 0ms`)
+				.add("transform", "translateY(-150px)");
+
+		return h;
+	},
 	time: 800,
 	onUnhide: (isEnd, collapse, children) => {
 		if(!isEnd){
-			children.style().remove("transform")
+			children.render.style().remove("transform");
 		}
 	}, 
 	onHide: (isEnd, collapse, children) => {
 		if(!isEnd){
-			children.style().add("transform", "translateY(-150px)")
+			children.render.style().add("transform", "translateY(-150px)")
 		}
 	},
 	height: 0
 });
 
 let contacts = Collapse({
-	children: Contacts().render
-		.style("transition", `transform ${800}ms cubic-bezier(0.81, 0, 0.31, 1) 0ms`)
-			.add("transform", "translateY(-150px)"),
+	children: () => {
+		let c = Contacts();
+		c.render
+			.style("transition", `transform ${800}ms cubic-bezier(0.81, 0, 0.31, 1) 0ms`)
+				.add("transform", "translateY(-150px)");
+
+		return c;
+	},
 	time: 800,
 	onUnhide: (isEnd, collapse, children) => {
 		if(!isEnd){
-			children.style().remove("transform")
+			children.render.style().remove("transform");
+			children.open();
 		}
 	}, 
 	onHide: (isEnd, collapse, children) => {
 		if(!isEnd){
-			children.style().add("transform", "translateY(-150px)")
+			children.render.style().add("transform", "translateY(-150px)")
 		}
 	},
 	height: 0

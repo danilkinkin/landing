@@ -57,6 +57,10 @@ function UIConstructor(element){
 
 		return this;
 	};
+
+	this.destroy = () => {
+		this._html.remove();
+	}
 }
 
 function UIClassName(parent){

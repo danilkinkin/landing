@@ -18,7 +18,7 @@ contacts {
     display: block;
 }
 .body {
-    height: 100vh;
+    height: 100%;
     width: 100%;    
     display: flex;
     flex-direction: column;
@@ -65,11 +65,23 @@ contacts {
     background-color: #0000FF;
     color: #fff;
 }
+contacts .body {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-end;
+}
 contacts h1 {
     margin-bottom: 50px;
 }
 contacts a {
     margin-top: 10px;
+}
+contacts h1,
+contacts a {
+    background-color: blue;
+    z-index: 1;
+    padding: 0 20px;
 }
 contacts .home-link {
     margin-top: 45px;
@@ -80,6 +92,11 @@ contacts .home-link {
 }
 contacts .home-link span {
     margin-left: 8px;
+}
+contacts .big-logo {
+    position: absolute;
+    left: 49%;
+    bottom: -42%;
 }
 preloader {
     position: absolute;
@@ -124,5 +141,9 @@ preloader svg {
     }
     a {
         font-size: 15px;
+    }
+    contacts .big-logo {
+        left: 25%;
+        bottom: -12%;
     }
 }

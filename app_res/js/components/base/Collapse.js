@@ -1,6 +1,9 @@
 import UI from "../../core/UI.js";
 
 function Collapse({onUnhide, onHide, onSetHeight, children, height, time = 300}){
+
+	children = typeof children === "function"? children() : children;
+
 	let timer = null;
 	let wrp = UI()
 				.className("collpase-wrapper")
