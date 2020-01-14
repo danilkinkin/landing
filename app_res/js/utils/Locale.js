@@ -12,7 +12,8 @@ export const setLocale = (newLocale) => {
 			locale = EN;
 			break;
 		default:
-			throw new Error(`Unknown locale [${newLocale}]`)
+			locale = EN;
+			//throw new Error(`Unknown locale [${newLocale}]`)
 			break;
 	}
 };

@@ -6,7 +6,7 @@ import Home from "./pages/Home.js";
 import Contacts from "./pages/Contacts.js";
 import Preloader from "./pages/Preloader.js";
 
-setLocale("RU");
+setLocale((navigator.language || navigator.userLanguage).substring(0, 2).toUpperCase());
 document.title = "Danilkinkin";
 window.onhashchange = route;
 
