@@ -17,6 +17,7 @@ function route() {
 			home.collapse();
 			break;
 		default:
+			window.location.hash = "#";
 			home.uncollapse();
 			contacts.collapse();
 			break;
