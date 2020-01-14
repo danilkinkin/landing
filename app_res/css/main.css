@@ -71,9 +71,6 @@ contacts h1 {
 contacts a {
     margin-top: 10px;
 }
-contacts a:hover{
-    font-size: 25px;
-}
 contacts .home-link {
     margin-top: 45px;
     display: flex;

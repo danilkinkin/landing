@@ -17,8 +17,6 @@ function Collapse({onUnhide, onHide, onSetHeight, children, height, time = 300})
 
 		let height = wrp.html.clientHeight;
 
-		console.log(height)
-
 		if(timer) clearTimeout(timer);
 
 		if(onHide) onHide(false, this, children);

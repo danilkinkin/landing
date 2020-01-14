@@ -13,12 +13,10 @@ window.onhashchange = route;
 function route() {
 	switch (window.location.hash.substring(1)) {
 		case "contacts":
-			console.log("/contacts")
 			contacts.uncollapse();
 			home.collapse();
 			break;
 		default:
-			console.log("/home")
 			home.uncollapse();
 			contacts.collapse();
 			break;
