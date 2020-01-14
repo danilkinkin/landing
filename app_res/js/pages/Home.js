@@ -1,10 +1,11 @@
 import UI from "../core/UI.js";
 import { useState, observer } from "../utils/Store.js";
+import { getSafeValue as LOC} from "../utils/Locale.js";
 
 import Link from "../components/custom/Link.js";
 
 function Age({now}){
-	return UI("span").className("age").text("20 лет")
+	return 20;
 }
 
 function Home(){
@@ -15,17 +16,13 @@ function Home(){
 	UI("h1").text("Danilkinkin").insert(body);
 	UI("h3").text("web UX/UI developer").insert(body);
 	UI("p")
-		.text(
-			`Привет, я Данил Захваткин, мне ${
-				Age({now: Date.now()}).toString()
-			} я занимаюсь разработкой веб приложений, сайтов и другими интересными вещами.`
-		)
+		.text(LOC("about_me", Age({now: Date.now()})))
 		.insert(body);
 	UI()
 		.className("footer")
 		.append(
 			Link({
-				label: "Контакты",
+				label: LOC("contacts"),
 				link: "#contacts"
 			})
 		)

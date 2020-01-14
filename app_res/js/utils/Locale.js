@@ -1,11 +1,15 @@
 import RU from "../../lang/RU.js";
+import EN from "../../lang/EN.js";
 
-let locale = RU;
+let locale;
 
 export const setLocale = (newLocale) => {
 	switch (newLocale.toUpperCase()) {
 		case "RU":
 			locale = RU;
+			break;
+		case "EN":
+			locale = EN;
 			break;
 		default:
 			throw new Error(`Unknown locale [${newLocale}]`)
@@ -13,6 +17,10 @@ export const setLocale = (newLocale) => {
 	}
 };
 
-export const getValue = (key) => locale[key];
+export const getValue = (key) => typeof locale[key] === "function"? locale[key](arguments) : locale[key];
 
-export const getSafeValue = (key) => locale[key] || key;
+export const getSafeValue = (key, ...param) => {
+	if(!locale[key]) return key;
+
+	return typeof locale[key] === "function"? locale[key](...param) : locale[key];
+};

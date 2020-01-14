@@ -1,5 +1,6 @@
 import UI from "../core/UI.js";
 import { useState, observer } from "../utils/Store.js";
+import { getSafeValue as LOC} from "../utils/Locale.js";
 
 import { ArrowBack as ArrowBackIcon, Home as HomeIcon } from "../core/Icons.js";
 import Link from "../components/custom/Link.js";
@@ -17,31 +18,31 @@ function Contacts(){
 	}).render.insert(body);
 
 	Link({
-		label: "Github",
+		label: LOC("github"),
 		link: "https://github.com/Danilkinkin",
 		newTab: true
 	}).render.insert(body);
 
 	Link({
-		label: "Вконтакте",
+		label: LOC("vk"),
 		link: "https://vk.com/danilkinkin",
 		newTab: true
 	}).render.insert(body);
 
 	Link({
-		label: "Telegram",
+		label: LOC("telegram"),
 		link: "https://t.me/Danilkinkin",
 		newTab: true
 	}).render.insert(body);
 
 	Link({
-		label: "Instagram",
+		label: LOC("instagram"),
 		link: "https://www.instagram.com/danilkinkin",
 		newTab: true
 	}).render.insert(body);
 
 	Link({
-		label: "Pikabu",
+		label: LOC("pikabu"),
 		link: "https://pikabu.ru/@Danilkinkin",
 		newTab: true
 	}).render.insert(body);
@@ -51,7 +52,7 @@ function Contacts(){
 			ArrowBackIcon({
 				size: 24
 			}),
-			UI("span").text("На главную")
+			UI("span").text(LOC("to_the_main"))
 		],
 		link: "#"
 	}).render.className("home-link").insert(body);
