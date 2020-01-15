@@ -2,8 +2,9 @@ import UI from "../core/UI.js";
 import { useState, observer } from "../utils/Store.js";
 import { getSafeValue as LOC} from "../utils/Locale.js";
 
-import { ArrowBack as ArrowBackIcon, Home as HomeIcon } from "../core/Icons.js";
+import { ArrowBack as ArrowBackIcon, Mail as MailIcon } from "../core/Icons.js";
 import Link from "../components/custom/Link.js";
+import PrettyLink from "../components/custom/PrettyLink.js";
 import Logo from "../components/custom/Logo.js";
 
 function Contacts(){
@@ -13,42 +14,36 @@ function Contacts(){
 
 	UI("h1").text("Danilkinkin").insert(body);
 
-	Link({
-		label: "Hello@danilkinkin.com",
-		link: "mailto:hello@danilkinkin.com"
-	}).render.insert(body);
+	const links = [
+		{
+			label: "Hello@danilkinkin.com",
+			link: "mailto:hello@danilkinkin.com",
+			newTab: false,
+			icon: MailIcon
+		}, {
+			label: LOC("github"),
+			link: "https://github.com/Danilkinkin",
+		}, {
+			label: LOC("vk"),
+			link: "https://vk.com/danilkinkin",
+		}, {
+			label: LOC("telegram"),
+			link: "https://t.me/Danilkinkin",
+		}, {
+			label: LOC("instagram"),
+			link: "https://www.instagram.com/danilkinkin",
+		}, {
+			label: LOC("pikabu"),
+			link: "https://pikabu.ru/@Danilkinkin",
+		}
+	].map(link => PrettyLink({
+		newTab: true,
+		...link		
+	}));
 
-	Link({
-		label: LOC("github"),
-		link: "https://github.com/Danilkinkin",
-		newTab: true
-	}).render.insert(body);
-
-	Link({
-		label: LOC("vk"),
-		link: "https://vk.com/danilkinkin",
-		newTab: true
-	}).render.insert(body);
-
-	Link({
-		label: LOC("telegram"),
-		link: "https://t.me/Danilkinkin",
-		newTab: true
-	}).render.insert(body);
-
-	Link({
-		label: LOC("instagram"),
-		link: "https://www.instagram.com/danilkinkin",
-		newTab: true
-	}).render.insert(body);
-
-	Link({
-		label: LOC("pikabu"),
-		link: "https://pikabu.ru/@Danilkinkin",
-		newTab: true
-	}).render.insert(body);
+	body.append(links);
 	
-	Link({
+	PrettyLink({
 		content: [
 			ArrowBackIcon({
 				size: 24
@@ -56,7 +51,7 @@ function Contacts(){
 			UI("span").text(LOC("to_the_main"))
 		],
 		link: "#"
-	}).render.className("home-link").insert(body);
+	}).render.className().add("home-link").insert(body);
 
 	let logo;
 

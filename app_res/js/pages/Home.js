@@ -3,6 +3,8 @@ import { useState, observer } from "../utils/Store.js";
 import { getSafeValue as LOC} from "../utils/Locale.js";
 
 import Link from "../components/custom/Link.js";
+import PrettyLink from "../components/custom/PrettyLink.js";
+import { Mail as MailIcon } from "../core/Icons.js";
 
 function Age(now){
 	const born = new Date('1999-02-13T22:30:00+0500');
@@ -29,16 +31,19 @@ function Home(){
 	UI()
 		.className("footer")
 		.append(
-			Link({
+			PrettyLink({
 				label: LOC("contacts"),
-				link: "#contacts"
+				link: "#contacts",
+				isBlueFill: true
 			})
 		)
 		.append(
-			Link({
+			PrettyLink({
 				label: "hello@danilkinkin.com",
-				link: "mailto:hello@danilkinkin.com"
-			}).render.className("mail-link")
+				link: "mailto:hello@danilkinkin.com",
+				icon: MailIcon,
+				isBlueFill: true
+			}).render.className().add("mail-link")
 		)
 		.insert(body);
 }

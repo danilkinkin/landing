@@ -2,6 +2,8 @@ function UIConstructor(element){
 	this._html = element;
 
 	this.append = (appendElem) => {
+		if(!appendElem) return this;
+		
 		if(appendElem.forEach){
 			appendElem.forEach(elem => this.append(elem));
 			return this;
@@ -60,7 +62,18 @@ function UIConstructor(element){
 
 	this.destroy = () => {
 		this._html.remove();
-	}
+	};
+
+	this.event = (action, callback) => {
+		if(action){
+			if(!callback) 
+				console.error("UI: Not find callback function for event. "
+					+"Method 'event' should be called as 'event(actionName, callbackAction)'");
+			else this._html["on"+action] = (e)=>{callback(e, this)};
+		}
+
+		return this;
+	};
 }
 
 function UIClassName(parent){

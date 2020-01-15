@@ -13,3 +13,53 @@
 .collpase-wrapper-inner: {
 	width: 100%;
 }
+
+.pretty-link {
+	position: relative;
+    padding: 2px 10px;
+    border: 1px solid #00f;
+    border-left: none;
+    border-right: none;
+	display: flex;
+    align-items: center;
+}
+.pretty-link * {
+	pointer-events: none;
+}
+.pretty-link-hover-layer {
+	position: absolute;
+    left: 0;
+    overflow: hidden;
+    display: flex;
+    width: 0;
+    transition: width .3s cubic-bezier(0.81, 0, 0.31, 1);
+}
+.pretty-link-hover-layer-wrapper {
+	display: flex;
+    align-items: center;
+    background-color: white;
+    color: blue;
+    fill: blue;
+    border: 1px solid #00f;
+    padding: 2px 9px;
+    flex-shrink: 0;
+    flex-grow: 1;
+}
+.pretty-link-hover-layer-wrapper * {
+	flex-shrink: 0;
+}
+.pretty-link-hover-layer-icon{
+    margin-left: 8px;
+}
+.pretty-link.invert-color{
+	
+}
+.pretty-link.invert-color,
+.pretty-link.invert-color .pretty-link-hover-layer-wrapper{
+	border: 1px solid #fff;
+}
+.pretty-link.invert-color .pretty-link-hover-layer-wrapper{
+	color: #fff;
+    fill: #fff;
+    background-color: #00f;
+}
