@@ -27,7 +27,7 @@ function Link({ label, link, newTab = false, content, isBlueFill = false, icon }
 		.event("mouseenter", () => {
 			if(timer) clearTimeout(timer);
 			timer = setTimeout(() => {
-				hoverLayer.style("width", hoverContent.html.clientWidth+"px");
+				hoverLayer.style("width", hoverContent.html.clientWidth+2+"px");
 				timer = null;			
 			}, 200);
 		})
