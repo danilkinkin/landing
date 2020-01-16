@@ -4,7 +4,7 @@ var path = require('path')
 
 app
 	.set('view engine', 'ejs')
-	.use('/app_res', server.static('app_res'))
+	.use('/app_res', server.static(path.join(__dirname, 'app_res'))
 	.get('/', (req, res) => {
 		res.sendFile(path.join(__dirname, '/index.html'));
 	})
