@@ -11,6 +11,11 @@ app
 	/*.get('*', function(req, res){
 		res.redirect("/");
 	})*/
-	.listen(3000, function () {
-		console.log('Start on port 3000');
+	.listen(process.env.RELEASE === "production" && 8080 || 3000, () => {
+
+		console.log('Start on port:', process.env.RELEASE === "production" && 8080 || 3000);
+
+		if(process.env.RELEASE === "production"){
+			console.log('Is production release');
+		}
 	});
