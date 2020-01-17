@@ -22,6 +22,9 @@ function Contacts(){
 			newTab: false,
 			icon: MailIcon
 		}, {
+			label: LOC("hh"),
+			link: "https://hh.ru/applicant/resumes/view?resume=06760663ff05853e470039ed1f414d56723455",
+		}, {
 			label: LOC("github"),
 			link: "https://github.com/Danilkinkin",
 		}, {

@@ -24,6 +24,7 @@ export default {
 	telegram: "Telegram",
 	instagram: "Instagram",
 	pikabu: "Пикабу",
+	hh: "Резюме на HeadHunter",
 	contacts: "Контакты",
 	about_me: age => `Привет, я Данил Захваткин, мне ${age} ${ageSufix(age)} я занимаюсь разработкой веб приложений, сайтов и другими интересными вещами.`
 };

@@ -6,6 +6,7 @@ export default {
 	telegram: "Telegram",
 	instagram: "Instagram",
 	pikabu: "Pikabu",
+	hh: "Resume on HeadHunter",
 	contacts: "Contacts",
 	about_me: age => `Hi, I’m Danil Zakhvatkin, I’m ${age} years old. I have been developing web applications, websites and other interesting things.`
 };
