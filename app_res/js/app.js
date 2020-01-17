@@ -1,5 +1,6 @@
 import { setLocale, getValue as LOC} from "./utils/Locale.js";
 import UI from "./core/UI.js";
+import { route, redirect, check as routeCheck } from "./utils/Route.js";
 
 import Collapse from "./components/base/Collapse.js";
 import Home from "./pages/Home.js";
@@ -8,21 +9,6 @@ import Preloader from "./pages/Preloader.js";
 
 setLocale((navigator.language || navigator.userLanguage).substring(0, 2).toUpperCase());
 document.title = "Danilkinkin";
-window.onhashchange = route;
-
-function route() {
-	switch (window.location.hash.substring(1)) {
-		case "contacts":
-			contacts.uncollapse();
-			home.collapse();
-			break;
-		default:
-			window.location.hash = "#";
-			home.uncollapse();
-			contacts.collapse();
-			break;
-	}
-}
 
 let home = Collapse({
 	children: () => {
@@ -73,16 +59,28 @@ let contacts = Collapse({
 
 let preloader = Preloader({
 	onLoad: () => {
-		route();
-		preloader.render.style("transform", "translateY(150px)")
+		preloader.render.style("transform", "translateY(150px)");
+		routeCheck();
 	},
-	invert: window.location.hash.substring(1) === "contacts"
+	invert: window.location.pathname.substring(1) === "contacts"
 });
 
-home.render.insert(document.body);
-contacts.render.insert(document.body);
-preloader.render.insert(document.body).style("transition", `transform ${800}ms cubic-bezier(0.81, 0, 0.31, 1) 0ms`);
+window.onload = () => {
+	home.render.insert(document.body);
+	contacts.render.insert(document.body);
+	preloader.render.insert(document.body).style("transition", `transform ${800}ms cubic-bezier(0.81, 0, 0.31, 1) 0ms`);
+}
 
-/*setTimeout(() => {
-	route();
-}, 400)*/
+route("/", () => {
+	if(!preloader.isLoad) return;
+	home.uncollapse();
+	contacts.collapse();
+});		
+route("/contacts", () => {
+	if(!preloader.isLoad) return;
+	contacts.uncollapse();
+	home.collapse();
+});
+route("404", () => {
+	redirect("/");
+});

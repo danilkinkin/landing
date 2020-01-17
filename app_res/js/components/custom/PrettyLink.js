@@ -1,10 +1,8 @@
 import UI from "../../core/UI.js";
 import { OpenInNew as OpenInNewIcon } from "../../core/Icons.js";
 
-function Link({ label, link, newTab = false, content, isBlueFill = false, icon }){
+function Link({ label, link, onClick, newTab = false, content, isBlueFill = false, icon }){
 	this.render = UI("a").className("pretty-link");
-
-	console.log((newTab && OpenInNewIcon || icon) && 1)
 
 	if(isBlueFill) this.render.className().add("invert-color");
 
@@ -39,7 +37,11 @@ function Link({ label, link, newTab = false, content, isBlueFill = false, icon }
 			}, 200);
 		})
 
-	if(link) this.render.attribute("href", link);
+	this.render.attribute("href", link);
+	if(onClick) this.render.event("click", (event) => {
+		event.preventDefault();
+		onClick();
+	});
 	if(newTab) this.render.attribute("target", "_blank");
 }
 

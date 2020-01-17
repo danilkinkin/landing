@@ -3,7 +3,17 @@ import Logo from "../components/custom/Logo.js";
 
 function Preloader({ onLoad, invert = false }){
 	this.render = UI("preloader")	
-		.append(Logo({ onLoad, isBlueFill: invert }))
+		.append(
+			Logo({
+				onLoad: () => {
+					this.isLoad = true;
+					onLoad();
+				}, 
+				isBlueFill: invert
+			})
+		);
+
+	this.isLoad = false;
 
 	if(invert) this.render.className("preloader-invert");
 }

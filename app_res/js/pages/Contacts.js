@@ -1,6 +1,7 @@
 import UI from "../core/UI.js";
 import { useState, observer } from "../utils/Store.js";
-import { getSafeValue as LOC} from "../utils/Locale.js";
+import { getSafeValue as LOC } from "../utils/Locale.js";
+import { redirect } from "../utils/Route.js";
 
 import { ArrowBack as ArrowBackIcon, Mail as MailIcon } from "../core/Icons.js";
 import Link from "../components/custom/Link.js";
@@ -50,7 +51,7 @@ function Contacts(){
 			}),
 			UI("span").text(LOC("to_the_main"))
 		],
-		link: "#"
+		onClick: () => redirect("/")
 	}).render.className().add("home-link").insert(body);
 
 	let logo;

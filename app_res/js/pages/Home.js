@@ -1,6 +1,7 @@
 import UI from "../core/UI.js";
 import { useState, observer } from "../utils/Store.js";
 import { getSafeValue as LOC} from "../utils/Locale.js";
+import { redirect } from "../utils/Route.js";
 
 import Link from "../components/custom/Link.js";
 import PrettyLink from "../components/custom/PrettyLink.js";
@@ -33,7 +34,7 @@ function Home(){
 		.append(
 			PrettyLink({
 				label: LOC("contacts"),
-				link: "#contacts",
+				onClick: () => redirect("/contacts"),
 				isBlueFill: true
 			})
 		)
