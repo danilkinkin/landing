@@ -7,7 +7,7 @@ const app = express();
 
 const isRelease = process.env.RELEASE === "prod";
 const sslKeys = process.env.SSL_KEYS && JSON.parse(process.env.SSL_KEYS);
-const port = isRelease? (sslKeys? 8000 : 80) : 3000;
+const port = isRelease? (sslKeys? 443 : 80) : 3000;
 const options = sslKeys && {
     key: fs.readFileSync(sslKeys.key, 'utf8'),
     cert: fs.readFileSync(sslKeys.cert, 'utf8'),
@@ -20,7 +20,9 @@ app
 	.use('/.well-known', express.static(path.join(__dirname, '/.well-known')))
 	.get('/*', (req, res) => {
 		res.sendFile(path.join(__dirname, '/index.html'));
-	})
+	});
+
+server
 	.listen(port, () => {
 		console.log('Starting Server...');
 		console.log('HTTPS:', sslKeys? 'on' : 'off');
