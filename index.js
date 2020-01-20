@@ -7,7 +7,7 @@ const app = express();
 
 const isRelease = process.env.RELEASE === "prod";
 const sslKeys = process.env.SSL_KEYS && JSON.parse(process.env.SSL_KEYS);
-const port = isRelease? (sslKeys? 443 : 80) : 3000;
+const port = isRelease? (sslKeys? 8000 : 80) : 3000;
 const options = sslKeys && {
     key: fs.readFileSync(sslKeys.key, 'utf8'),
     cert: fs.readFileSync(sslKeys.cert, 'utf8'),
@@ -26,5 +26,4 @@ app
 		console.log('HTTPS:', sslKeys? 'on' : 'off');
 		console.log('Deploy:', isRelease? 'release' : 'develop');
 		console.log('Start on port:', port);
-		if(sslKeys) console.log('SSL_KEYS', options)
 	});
