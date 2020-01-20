@@ -12,7 +12,7 @@ const options = sslKeys && {
     key: fs.readFileSync(sslKeys.key, 'utf8'),
     cert: fs.readFileSync(sslKeys.cert, 'utf8'),
 };
-const server = isRelease? https.createServer(options, express()) : http.createServer(express());
+const server = isRelease? https.createServer(options, app) : http.createServer(app);
 
 app
 	.set('view engine', 'ejs')
