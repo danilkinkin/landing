@@ -25,19 +25,26 @@ const options = sslKeys && {
 };
 const server = isRelease? https.createServer(options, app) : http.createServer(app);
 
-try {
-	app
-		.set('view engine', 'ejs')
-		.use('/app_res', express.static(path.join(__dirname, '/app_res')))
-		.use('/.well-known', express.static(path.join(__dirname, '/.well-known')))
-		.get('/*', (req, res) => {
-			res.sendFile(path.join(__dirname, '/index.html'));
+// set up a route to redirect http to https
+if(sslKeys) {
+	express()
+		.get('*', function(req, res) {  
+		    res.redirect('https://' + req.headers.host + req.url);
+		})
+		.listen(80, () => {
+			console.log('Started redirect server');
 		});
+}
 
-	server
-		.listen(port, () => {
-			console.log('Starting successfull');
-		});
-} catch(e) {
-	console.log('Error start server', e);
-}		
+app
+	.set('view engine', 'ejs')
+	.use('/app_res', express.static(path.join(__dirname, '/app_res')))
+	.use('/.well-known', express.static(path.join(__dirname, '/.well-known')))
+	.get('/*', (req, res) => {
+		res.sendFile(path.join(__dirname, '/index.html'));
+	});
+
+server
+	.listen(port, () => {
+		console.log('Starting successfull');
+	});	
