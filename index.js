@@ -15,7 +15,7 @@ const sslKeys = process.env.SSL_KEYS && JSON.parse(process.env.SSL_KEYS);
 
 console.log('HTTPS:', sslKeys ? 'on' : 'off');
 
-const port = isRelease ? (sslKeys ? 443 : 8081) : 3000;
+const port = isRelease ? (sslKeys ? 443 : 7000) : 3000;
 
 console.log('Port:', port);
 
