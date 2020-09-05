@@ -46,6 +46,10 @@ app
 	});
 
 server
-	.listen(port, () => {
-		console.log('Starting successfull');
+	.listen(port, (e) => {
+		if (!!e) {
+			console.log('Failed start', e);
+		} else {	
+			console.log('Starting successfull');
+		}
 	});	
