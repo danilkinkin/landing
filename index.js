@@ -15,7 +15,7 @@ const sslKeys = process.env.SSL_KEYS && JSON.parse(process.env.SSL_KEYS);
 
 console.log('HTTPS:', sslKeys ? 'on' : 'off');
 
-const port = isRelease ? (sslKeys ? 443 : 3000) : 3000;
+const port = isRelease ? (sslKeys ? 443 : 80) : 3000;
 
 console.log('Port:', port);
 
@@ -23,7 +23,7 @@ const options = sslKeys && {
     key: fs.readFileSync(sslKeys.key, 'utf8'),
     cert: fs.readFileSync(sslKeys.cert, 'utf8'),
 };
-const server = isRelease? https.createServer(options || {}, app) : http.createServer(app);
+const server = isRelease && sslKeys? https.createServer(options || {}, app) : http.createServer(app);
 
 // set up a route to redirect http to https
 if(sslKeys) {
