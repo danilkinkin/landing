@@ -41,7 +41,6 @@ app
 	.use('/app_res', express.static(path.join(__dirname, '/app_res')))
 	.use('/.well-known', express.static(path.join(__dirname, '/.well-known')))
 	.get('/*', (req, res) => {
-		console.log("Send response");
 		res.sendFile(path.join(__dirname, '/index.html'));
 	});
 
