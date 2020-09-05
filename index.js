@@ -9,13 +9,13 @@ console.log('Starting Server...');
 
 const isRelease = process.env.RELEASE === "prod";
 
-console.log('Deploy:', isRelease? 'release' : 'develop');
+console.log('Deploy:', isRelease ? 'release' : 'develop');
 
 const sslKeys = process.env.SSL_KEYS && JSON.parse(process.env.SSL_KEYS);
 
-console.log('HTTPS:', sslKeys? 'on' : 'off');
+console.log('HTTPS:', sslKeys ? 'on' : 'off');
 
-const port = isRelease? (sslKeys? 443 : 80) : 3000;
+const port = isRelease ? (sslKeys ? 443 : 80) : 3000;
 
 console.log('Port:', port);
 
@@ -41,6 +41,7 @@ app
 	.use('/app_res', express.static(path.join(__dirname, '/app_res')))
 	.use('/.well-known', express.static(path.join(__dirname, '/.well-known')))
 	.get('/*', (req, res) => {
+		console.log("Send response");
 		res.sendFile(path.join(__dirname, '/index.html'));
 	});
 
