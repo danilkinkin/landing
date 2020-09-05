@@ -23,7 +23,7 @@ const options = sslKeys && {
     key: fs.readFileSync(sslKeys.key, 'utf8'),
     cert: fs.readFileSync(sslKeys.cert, 'utf8'),
 };
-const server = isRelease? https.createServer(options, app) : http.createServer(app);
+const server = isRelease? https.createServer(options || {}, app) : http.createServer(app);
 
 // set up a route to redirect http to https
 if(sslKeys) {
