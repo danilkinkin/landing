@@ -1,0 +1,21 @@
+version: "3.3"
+networks:
+  web:
+    external: true
+services:
+    landing:
+        build:
+            context: .
+            args:
+              - SSH_PRV_KEY=$SSH_PRV_KEY
+              - SSH_PUB_KEY=$SSH_PUB_KEY
+        restart: unless-stopped
+        networks:
+          - web
+        labels:
+          - "traefik.enable=true"
+          - "traefik.http.routers.landing.rule=Host(`rigami.io`)"
+          - "traefik.http.routers.landing.entrypoints=web-http,web-https"
+          - "traefik.http.routers.landing.tls=true"
+          - "traefik.http.routers.landing.tls.certresolver=letsEncrypt"
+          - "traefik.http.services.landing-service.loadbalancer.server.port=80"

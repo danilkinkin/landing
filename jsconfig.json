@@ -1,0 +1,20 @@
+{
+    "compilerOptions": {
+		"module": "esnext",
+		"target": "esnext",
+		"lib": [
+			"esnext",
+			"esnext.array"
+		],
+		"esModuleInterop": true,
+		"baseUrl": "./src",
+		"paths": {
+			"@/*": ["./*"]
+		}
+    },
+    "exclude": [
+		"node_modules",
+		".next",
+		"out"
+    ]
+}
