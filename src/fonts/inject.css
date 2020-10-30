@@ -1,29 +1,11 @@
 @font-face {
-    font-family: 'Red Hat Display';
-    src: url('./RedHatDisplay-Bold.ttf');
+    font-family: 'Gilroy';
+    src: url('./Gilroy-ExtraBold.otf');
     font-weight: bold;
 }
 
 @font-face {
-    font-family: 'Ubuntu';
-    src: url('./Ubuntu-Medium.ttf');
-    font-weight: bold;
-}
-
-@font-face {
-    font-family: 'Source Sans Pro';
-    src: url('./SourceSansPro-Regular.ttf');
-    font-weight: normal;
-}
-
-@font-face {
-    font-family: 'Source Sans Pro';
-    src: url('./SourceSansPro-SemiBold.ttf');
-    font-weight: bold;
-}
-
-@font-face {
-    font-family: 'Noto Color Emoji';
-    src: url('./NotoColorEmoji.ttf');
+    font-family: 'Gilroy';
+    src: url('./Gilroy-Light.otf');
     font-weight: normal;
 }

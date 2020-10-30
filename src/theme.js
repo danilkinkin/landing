@@ -2,8 +2,8 @@ import { createMuiTheme } from '@material-ui/core/styles';
 
 const theme = createMuiTheme({
     palette: {
-        primary: { main: '#62B9FE' },
-        secondary: { main: '#FFE16B' },
+        primary: { main: '#0000FF' },
+        secondary: { main: '#2D2D2D' },
     },
 }, {
     breakpoints: { values: { lg: 1600 } },
@@ -14,6 +14,7 @@ const theme = createMuiTheme({
                 body: {
                     backgroundColor: '#fff',
                     overflow: 'hidden',
+                    fontFamily: 'Gilroy',
                 },
             },
         },
