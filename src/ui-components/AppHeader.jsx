@@ -36,8 +36,8 @@ function AppHeader({ light = false, className: externalClassName }) {
                 className={clsx(classes.link, light && classes.light)}
             />
             <PrettyLink
-                url="mailto:hello@danilkinkin.com"
-                label="hello@danilkinkin.com"
+                url="mailto:danilkinkin@gmail.com"
+                label="danilkinkin@gmail.com"
                 className={clsx(classes.mailLink, light && classes.light)}
             />
         </Box>
