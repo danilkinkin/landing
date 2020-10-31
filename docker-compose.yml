@@ -4,11 +4,7 @@ networks:
     external: true
 services:
     danilkinkin-landing:
-        build:
-            context: .
-            args:
-              - SSH_PRV_KEY=$SSH_PRV_KEY
-              - SSH_PUB_KEY=$SSH_PUB_KEY
+        build: .
         restart: unless-stopped
         networks:
           - web
