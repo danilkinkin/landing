@@ -6,6 +6,8 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import theme from '@/theme';
 import '@/fonts/inject.css';
 import Head from 'next/head';
+import SmoothScroll from '@/ui-components/SmoothScroll';
+import useMainStateStore from '@/utils/mainStateStore';
 
 class MyApp extends App {
     componentDidMount() {
@@ -13,6 +15,7 @@ class MyApp extends App {
 
     render() {
         const { Component, pageProps } = this.props;
+        const { eventBus } = useMainStateStore();
 
         return (
             <Fragment>
@@ -55,15 +58,17 @@ class MyApp extends App {
                 </Head>
                 <CssBaseline />
                 <ThemeProvider theme={theme}>
-                    <Box
-                        style={{
-                            minHeight: '100vh',
-                            display: 'flex',
-                            flexDirection: 'column',
-                        }}
-                    >
-                        <Component {...pageProps} />
-                    </Box>
+                    <SmoothScroll onScroll={(scrollOffset) => eventBus.call('document.scroll', scrollOffset)}>
+                        <Box
+                            style={{
+                                minHeight: '100vh',
+                                display: 'flex',
+                                flexDirection: 'column',
+                            }}
+                        >
+                            <Component {...pageProps} />
+                        </Box>
+                    </SmoothScroll>
                 </ThemeProvider>
             </Fragment>
         );

@@ -9,3 +9,9 @@
     src: url('./Gilroy-Light.otf');
     font-weight: normal;
 }
+
+@font-face {
+    font-family: 'Red Hat Display';
+    src: url('./RedHatDisplay-Bold.ttf');
+    font-weight: bold;
+}

@@ -22,16 +22,9 @@ const theme = createMuiTheme({
             'h5': {
                 fontSize: 18,
                 fontWeight: 'bold',
-                fontFamily: 'Ubuntu',
             },
-            'h4': {
-                fontSize: 32,
-                fontFamily: 'Source Sans Pro',
-            },
-            'body1': {
-                fontSize: 16,
-                fontFamily: 'Source Sans Pro',
-            },
+            'h4': { fontSize: 32 },
+            'body1': { fontSize: '1.5rem' },
         },
     },
     props: { MuiButton: { disableElevation: true } },
@@ -39,6 +32,7 @@ const theme = createMuiTheme({
         borderRadius: 4,
         borderRadiusBold: 8,
     },
+    typography: { fontFamily: '"Red Hat Display", "Arial", sans-serif' },
     transitions: {
         easing: {
             extraEaseInOut: 'cubic-bezier(0.85, 0.01, 0.13, 1)',
