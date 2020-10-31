@@ -19,6 +19,7 @@ const useStyles = makeStyles((theme) => ({
         marginBottom: theme.spacing(4),
     },
     slogan: {
+        marginTop: theme.spacing(-0.5),
         marginBottom: theme.spacing(4),
         fontWeight: 900,
     },

@@ -24,7 +24,7 @@ const theme = createMuiTheme({
                 fontWeight: 'bold',
             },
             'h4': { fontSize: 32 },
-            'body1': { fontSize: '1.5rem' },
+            'body1': { fontSize: '1.3rem' },
         },
     },
     props: { MuiButton: { disableElevation: true } },
