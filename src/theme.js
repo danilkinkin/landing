@@ -3,7 +3,7 @@ import { createMuiTheme } from '@material-ui/core/styles';
 const theme = createMuiTheme({
     palette: {
         primary: { main: '#0000FF' },
-        secondary: { main: '#2D2D2D' },
+        secondary: { main: '#ff7f7f' },
     },
 }, {
     breakpoints: { values: { lg: 1600 } },

@@ -24,6 +24,7 @@ const useStyles = makeStyles((theme) => ({
         fontWeight: 900,
     },
     appHeader: { marginBottom: theme.spacing(4) },
+    marker: { color: theme.palette.secondary.main },
 }));
 
 const getCurrAge = (now = new Date()) => {
@@ -56,7 +57,10 @@ function HomeScreen() {
                     web developer
                 </Typography>
                 <Typography variant="body1" className={classes.text}>
-                    Hi, I am busy in web application development, and other interesting little things.
+                    Hi, I am busy in
+                    {' '}
+                    <span className={classes.marker}>web application development</span>
+                    , and other interesting little things.
                     My name is Danil Zakhvatkin, I am
                     {' '}
                     {currAge}

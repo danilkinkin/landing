@@ -5,7 +5,10 @@ import PrettyLink from '@/ui-components/PrettyLink';
 import clsx from 'clsx';
 
 const useStyles = makeStyles((theme) => ({
-    root: { display: 'flex' },
+    root: {
+        display: 'flex',
+        flexWrap: 'wrap',
+    },
     mailLink: { marginLeft: 'auto' },
     link: { marginRight: theme.spacing(4) },
     light: {
