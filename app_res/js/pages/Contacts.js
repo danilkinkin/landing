@@ -6,7 +6,7 @@ import { redirect } from '../utils/Route.js';
 import { ArrowBack as ArrowBackIcon, Mail as MailIcon } from '../core/Icons.js';
 import Link from '../components/custom/Link.js';
 import PrettyLink from '../components/custom/PrettyLink.js';
-import Logo from '../components/custom/Logo.js';
+import Logo from '@/ui-components/Logo/Animated.jsx';
 
 function Contacts() {
     this.render = UI('contacts');

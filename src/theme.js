@@ -5,6 +5,18 @@ const theme = createMuiTheme({
         primary: { main: '#0000FF' },
         secondary: { main: '#ff7f7f' },
     },
+    overrides: {
+        MuiCssBaseline: {
+            '@global': {
+                html: { WebkitFontSmoothing: 'auto' },
+                body: {
+                    backgroundColor: '#fff',
+                    overflow: 'hidden',
+                },
+                div: { overflow: 'hidden' },
+            },
+        },
+    },
 }, {
     breakpoints: { values: { lg: 1600 } },
     overrides: {
@@ -14,8 +26,8 @@ const theme = createMuiTheme({
                 body: {
                     backgroundColor: '#fff',
                     overflow: 'hidden',
-                    fontFamily: 'Gilroy',
                 },
+                div: { overflow: 'hidden' },
             },
         },
         MuiTypography: {
@@ -23,7 +35,7 @@ const theme = createMuiTheme({
                 fontSize: 18,
                 fontWeight: 'bold',
             },
-            'h4': { fontSize: 32 },
+            'h4': { fontSize: '1rem' },
             'body1': { fontSize: '1.3rem' },
         },
     },

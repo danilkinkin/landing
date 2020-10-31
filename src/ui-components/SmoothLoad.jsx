@@ -1,40 +1,74 @@
-import React, { useEffect, useState } from 'react';
-import { Box, Fade } from '@material-ui/core';
-import i18n from 'i18next';
-import { initReactI18next } from 'react-i18next';
-import LanguageDetector from 'i18next-browser-languagedetector';
-import Backend from 'i18next-http-backend';
+import React, { Fragment, useState, useEffect } from 'react';
+import AnimateLogo from '@/ui-components/Logo/Animated';
+import { Box } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import Wave from '@/ui-components/Wave';
+import clsx from 'clsx';
 
-const loadLocale = async () => {
-    console.log("Is production mode", PRODUCTION_MODE)
-
-    await i18n
-        .use(initReactI18next)
-        .use(LanguageDetector)
-        .use(Backend)
-        .init({
-            fallbackLng: PRODUCTION_MODE ? 'en' : 'en',
-            // debug: true,
-            interpolation: { escapeValue: false },
-            backend: { loadPath: '/i18n/{{lng}}.json' },
-        });
-};
+const useStyles = makeStyles((theme) => ({
+    root: {
+        height: '100vh',
+        width: '100vw',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        zIndex: theme.zIndex.modal,
+        backgroundColor: theme.palette.common.white,
+        transition: theme.transitions.create(['transform', 'height'], {
+            duration: 700,
+            easing: theme.transitions.easing.extraEaseInOut,
+        }),
+    },
+    wave: {
+        position: 'absolute',
+        bottom: -199,
+    },
+    hide: {
+        height: 180,
+        transform: 'translateY(-100%)',
+    },
+    content: {
+        transition: theme.transitions.create('', {
+            duration: 700,
+            easing: theme.transitions.easing.extraEaseInOut,
+        }),
+    },
+    hideContent: { transform: 'translateY(30%)' },
+}));
 
 function SmoothLoad({ children }) {
-    const [isShow, setIsShow] = useState(false);
+    const classes = useStyles();
+    const [isLoad, setIsLoad] = useState(false);
 
-    useEffect(() => {
-        loadLocale().then(() => {
-            setIsShow(true);
-        });
-    }, []);
+    /* useEffect(() => {
+        if (typeof window === 'undefined') return;
+
+        window.onclick = () => setIsLoad((oldState) => !oldState);
+    }, []); */
 
     return (
-        <Fade in={isShow} unmountOnExit>
-            <Box>
+        <Fragment>
+            <Box className={clsx(classes.root, isLoad && classes.hide)}>
+                <AnimateLogo
+                    size={180}
+                    onEnd={() => setIsLoad(true)}
+                />
+                <Wave
+                    className={classes.wave}
+                    width={1920}
+                    height={200}
+                    size={isLoad ? 0 : 1}
+                    time={700}
+                    color="#fff"
+                />
+            </Box>
+            <Box className={clsx(classes.content, !isLoad && classes.hideContent)}>
                 {children}
             </Box>
-        </Fade>
+        </Fragment>
     );
 }
 

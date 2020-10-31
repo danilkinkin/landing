@@ -13,6 +13,7 @@ module.exports = {
         "@babel/preset-react",
     ],
     "plugins": [
+        "styled-components",
         ["@babel/plugin-proposal-export-default-from"],
         ["@babel/plugin-syntax-throw-expressions"],
         ["@babel/plugin-proposal-decorators", { "legacy": true }],
