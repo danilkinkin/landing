@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from 'react';
-import { useLocalStore } from 'mobx-react';
+import { useLocalStore } from 'mobx-react-lite';
 
 function drawWave(props) {
     const {
