@@ -13,7 +13,8 @@ import SmoothLoad from '@/ui-components/SmoothLoad';
 function MyApp({ Component, pageProps }) {
     const { eventBus } = useMainStateStore();
 
-    useEffect(() => {
+    React.useEffect(() => {
+        // Remove the server-side injected CSS.
         const jssStyles = document.querySelector('#jss-server-side');
         if (jssStyles) {
             jssStyles.parentElement.removeChild(jssStyles);
@@ -62,8 +63,8 @@ function MyApp({ Component, pageProps }) {
                     {'#__next { overflow: hidden; }'}
                 </style>
             </Head>
-            <CssBaseline />
             <ThemeProvider theme={theme}>
+                <CssBaseline />
                 <SmoothLoad>
                     <SmoothScroll onScroll={(scrollOffset) => eventBus.call('document.scroll', scrollOffset)}>
                         <Box
