@@ -58,7 +58,7 @@ function SmoothScroll({ children, onScroll }) {
 
         scrollbar.addListener(({ offset: { y } }) => onScroll(y));
 
-        console.log('scrollbar', scrollbar);
+        // console.log('scrollbar', scrollbar);
     }, []);
 
     return (

@@ -37,12 +37,20 @@ function cubic(t) {
     return 4 * (t - 1) * (t - 1) * (t - 1) + 1;
 }
 
-function AnimatedLogo({ onEnd, size = 168, className: externalClassName }) {
+function AnimatedLogo(props) {
+    const {
+        onEnd,
+        size = 168,
+        className: externalClassName,
+        time = 300,
+        value = 1,
+    } = props;
     const store = useLocalStore(() => ({
         ctx: null,
         start: -1,
         time: 0,
-        percentload: 0,
+        oldValue: 0,
+        currValue: value,
     }));
 
     const width = size * (129 / 168);
@@ -54,42 +62,46 @@ function AnimatedLogo({ onEnd, size = 168, className: externalClassName }) {
         // eslint-disable-next-line no-self-assign
         canvasRef.current.width = canvasRef.current.width;
 
+        store.currValue = store.oldValue + (-store.oldValue + value) * Math.min(Math.max(now - store.start, 0) / time, 1);
+
         drawCircle({
             ctx: store.ctx,
             depth: size * 0.11,
             color: '#000',
             size: width,
-            t: cubic(store.time),
+            t: cubic(store.currValue),
         });
-        if (store.time > 0.5) {
+        if (store.currValue > 0.5) {
             drawLine({
                 ctx: store.ctx,
                 depth: size * 0.11,
                 color: '#000',
                 size,
-                t: cubic(store.time * 2 - 1),
+                t: cubic(store.currValue * 2 - 1),
             });
         }
-        if (store.time < 0.92) {
-            store.time += (store.percentload * 0.01 - store.time) * 0.06;
-            store.percentload += store.time * 2 + 0.8;
-            requestAnimationFrame((n) => drawFrame(n, startTime));
-        } else if (store.time !== 1) {
-            store.time = 1;
-            if (onEnd) setTimeout(() => onEnd(), 200);
-            requestAnimationFrame((n) => drawFrame(n, startTime));
+
+        if (store.currValue === value) {
+            onEnd(store.currValue);
+            return;
         }
+
+        requestAnimationFrame((n) => drawFrame(n, startTime));
     };
 
     useEffect(() => {
         store.ctx = canvasRef.current.getContext('2d');
-        store.start = typeof window !== 'undefined' ? window.performance.now() : -1;
-        store.time = 0;
-        store.percentload = 0;
-        requestAnimationFrame((n) => drawFrame(n, store.start));
 
-        return () => { store.time = -1; };
+        return () => {
+            store.start = -1;
+        };
     }, []);
+
+    useEffect(() => {
+        store.start = typeof window !== 'undefined' ? window.performance.now() : -1;
+        store.oldValue = store.currValue;
+        requestAnimationFrame((n) => drawFrame(n, store.start));
+    }, [value]);
 
     return (
         <canvas

@@ -59,9 +59,6 @@ function MyApp({ Component, pageProps }) {
                 <meta property="twitter:title" content="Danilkinkin" />
                 <meta property="twitter:description" content="Hi, I’m Danil Zakhvatkin, I’m developing web applications, websites and other interesting things." />
                 <meta property="twitter:image" content="/large-share-image.png" />
-                <style>
-                    {'#__next { overflow: hidden; }'}
-                </style>
             </Head>
             <ThemeProvider theme={theme}>
                 <CssBaseline />

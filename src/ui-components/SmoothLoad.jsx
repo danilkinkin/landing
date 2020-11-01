@@ -42,6 +42,7 @@ const useStyles = makeStyles((theme) => ({
 function SmoothLoad({ children }) {
     const classes = useStyles();
     const [isLoad, setIsLoad] = useState(false);
+    const [isShowLogo, setIsShowLogo] = useState(false);
 
     /* useEffect(() => {
         if (typeof window === 'undefined') return;
@@ -49,12 +50,18 @@ function SmoothLoad({ children }) {
         window.onclick = () => setIsLoad((oldState) => !oldState);
     }, []); */
 
+    useEffect(() => {
+        setIsShowLogo(true);
+    }, []);
+
     return (
         <Fragment>
             <Box className={clsx(classes.root, isLoad && classes.hide)}>
                 <AnimateLogo
                     size={180}
-                    onEnd={() => setIsLoad(true)}
+                    time={350}
+                    value={isShowLogo ? 1 : 0}
+                    onEnd={(currValue) => (currValue === 1) && setIsLoad(true)}
                 />
                 <Wave
                     className={classes.wave}

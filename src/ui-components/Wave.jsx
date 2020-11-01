@@ -34,6 +34,7 @@ function AnimatedLogo(props) {
         color = '#000',
         time = 300,
     } = props;
+
     const store = useLocalStore(() => ({
         ctx: null,
         size,
@@ -46,19 +47,11 @@ function AnimatedLogo(props) {
     const canvasRef = useRef();
 
     const drawFrame = (now, startTime) => {
-        // console.log('propsFrame', now - store.start, now);
         if (store.time === -1 || !canvasRef.current || startTime !== store.start) return;
         // eslint-disable-next-line no-self-assign
         canvasRef.current.width = canvasRef.current.width;
 
-        store.currSize = store.oldSize + (-store.oldSize + size) * Math.min((now - store.start) / time, 1);
-
-        /* console.log({
-            linear: Math.min((now - store.start) / time, 1),
-            oldSize: store.oldSize,
-            currSize: store.currSize,
-            size,
-        }); */
+        store.currSize = store.oldSize + (-store.oldSize + size) * Math.min(Math.max(now - store.start, 0) / time, 1);
 
         drawWave({
             ctx: store.ctx,
@@ -67,6 +60,8 @@ function AnimatedLogo(props) {
             height,
             size: cubic(store.currSize),
         });
+
+        if (store.currSize === size) return;
 
         requestAnimationFrame((n) => drawFrame(n, startTime));
     };
