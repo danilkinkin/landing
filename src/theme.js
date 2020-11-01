@@ -6,7 +6,7 @@ const theme = createMuiTheme({
         secondary: { main: '#ff7f7f' },
     },
 }, {
-    breakpoints: { values: { lg: 1600 } },
+    breakpoints: { values: { lg: 1700 } },
     overrides: {
         MuiCssBaseline: {
             '@global': {
@@ -16,6 +16,7 @@ const theme = createMuiTheme({
                     overflow: 'hidden',
                 },
                 '#__next': { overflow: 'hidden' },
+                '::selection': { background: '#ff7f7f' },
             },
         },
         MuiTypography: {
@@ -24,7 +25,18 @@ const theme = createMuiTheme({
                 fontWeight: 'bold',
             },
             'h4': { fontSize: '1rem' },
-            'body1': { fontSize: '1.3rem' },
+            'body1': {
+                fontSize: '1.3rem',
+                '@media (max-width: 600px)': { fontSize: '1rem' },
+            },
+        },
+        MuiContainer: {
+            root: {
+                '@media (min-width: 600px)': {
+                    paddingLeft: 84,
+                    paddingRight: 84,
+                },
+            },
         },
     },
     props: { MuiButton: { disableElevation: true } },

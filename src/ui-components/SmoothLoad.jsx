@@ -3,6 +3,7 @@ import AnimateLogo from '@/ui-components/Logo/Animated';
 import { Box } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import Wave from '@/ui-components/Wave';
+import ResizeDetector from 'react-resize-detector';
 import clsx from 'clsx';
 
 const useStyles = makeStyles((theme) => ({
@@ -22,10 +23,7 @@ const useStyles = makeStyles((theme) => ({
             easing: theme.transitions.easing.extraEaseInOut,
         }),
     },
-    wave: {
-        position: 'absolute',
-        bottom: -199,
-    },
+    wave: { position: 'absolute' },
     hide: {
         height: 180,
         transform: 'translateY(-100%)',
@@ -43,16 +41,14 @@ function SmoothLoad({ children }) {
     const classes = useStyles();
     const [isLoad, setIsLoad] = useState(false);
     const [isShowLogo, setIsShowLogo] = useState(false);
-
-    /* useEffect(() => {
-        if (typeof window === 'undefined') return;
-
-        window.onclick = () => setIsLoad((oldState) => !oldState);
-    }, []); */
+    const [pageWidth, setPageWidth] = useState(400);
 
     useEffect(() => {
         setIsShowLogo(true);
+        setPageWidth(typeof document !== 'undefined' ? document?.documentElement?.clientWidth : 400);
     }, []);
+
+    const waveHeight = Math.min(pageWidth * 0.2, 200);
 
     return (
         <Fragment>
@@ -65,11 +61,12 @@ function SmoothLoad({ children }) {
                 />
                 <Wave
                     className={classes.wave}
-                    width={1920}
-                    height={200}
+                    width={pageWidth}
+                    height={waveHeight}
                     size={isLoad ? 0 : 1}
                     time={700}
                     color="#fff"
+                    style={{ bottom: `${-waveHeight + 1}px` }}
                 />
             </Box>
             <Box className={clsx(classes.content, !isLoad && classes.hideContent)}>

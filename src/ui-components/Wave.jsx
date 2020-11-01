@@ -33,6 +33,7 @@ function AnimatedLogo(props) {
         size = 0,
         color = '#000',
         time = 300,
+        style: externalClasses = {},
     } = props;
 
     const store = useLocalStore(() => ({
@@ -86,6 +87,7 @@ function AnimatedLogo(props) {
             width={width}
             ref={canvasRef}
             className={externalClassName}
+            style={{ ...externalClasses }}
         />
     );
 }
